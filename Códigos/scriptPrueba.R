@@ -1,1 +1,0 @@
-#Bueno dias, este script es de prueba.
