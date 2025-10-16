@@ -5,6 +5,7 @@
 ## Introducción
 
 ## Objetivo general
+Conocer mediante el estudio de tablas la correlación que puede llegar a existir entre entre la orientación sexual de un individuo y su predisposición a contraer la enfermedad del VIH.
 
 ## Objetivos específicos
 
