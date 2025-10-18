@@ -1,47 +1,38 @@
 ---
-title: "Seminario_estudio_VIH_ES"
+title: "Registros de VIH correlacionado con diversos factores"
 author: "Amina Khantimirova, Wiam Messari y Emma Arrieta"
-date: "2025-10-15"
-output: html_document
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    theme: flatly     
+    highlight: tango  
+    df_print: paged 
 ---
+
+<style>
+body {
+  text-align: justify;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background-color: #fff0f5;
+  color: #333;
+}
+</style>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Cargar datos del estudio
-```{r load-json, message=FALSE, warning=FALSE}
-library(jsonlite)
-library(dplyr)
-library(ggplot2)
 
-# Leer el archivo JSON
-data_list <- fromJSON("registro-nuevas-infecciones-por-vih.json", flatten = TRUE)
-data_df <- as.data.frame(data_list$fields)
-# Mostrar registros
-head(data_df)
+## **Introducción**
 
-# Resumen
-summary(data_df)
-table(data_df$sexo)
-table(data_df$estado_clinico)
-table(data_df$conducta_sexual)
+El **VIH** significa virus de inmunodeficiencia humana. Daña su sistema inmunitario al destruir un tipo de glóbulo blanco que ayuda a su cuerpo a combatir las infecciones. Esto lo pone en riesgo de tener otras infecciones y enfermedades.
 
-# Distribucion edad
-hist(data_df$edad,
-main = "Distribución de edad de los casos de VIH",
-xlab = "Edad",
-col = "steelblue",
-border = "white")
+Esta enfermedad afecta a un gran porcentaje de la población española, resultando en un foco de malestar. En este seminario estudiaremos aquellos indicativos que potencian la expresión de dicha enfermedad. 
 
-# Grafico 
-ggplot(data_df, aes(x = provincia_residencia)) +
-geom_bar(fill = "coral") +
-theme_minimal() +
-labs(title = "Número de casos por provincia", x = "Provincia", y = "Número de casos") +
-theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-
+Nuestro primer foco de interés es estudiar la correlación entre la orientación sexual y el VIH, pero también incluiresmos otros factores de riesgo que podrían desencadenar el virus.
 
 
 
