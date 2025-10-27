@@ -36,33 +36,34 @@ Nuestro primer foco de interés es estudiar la correlación entre la orientació
 
 
 ```{r , eval = TRUE,message=FALSE, warning=FALSE}
-# ============================================
-#   Script completo para abrir JSON en R
-# ============================================
+# Datos importacion
+library(tidyverse)
+library(rjson)
 
-# 1️⃣ Instalar y cargar librería (solo la primera vez)
-install.packages("jsonlite")  # si ya lo tienes, puedes saltarlo
-library(jsonlite)
 
-# 2️⃣ Leer el archivo JSON
-# Reemplaza la ruta si no está en tu carpeta de trabajo
-datos <- fromJSON("registro-nuevas-infecciones-por-vih.json", flatten = TRUE)
+```
 
-# 3️⃣ Ver la tabla completa
-View(datos)   # abre una ventana tipo Excel en RStudio
-head(datos)   # muestra las primeras 6 filas en consola
+### **Importación datos JSON:**
 
-# 4️⃣ Explorar los datos
-names(datos)  # muestra los nombres de las columnas
+```{r , eval = TRUE,message=FALSE, warning=FALSE}
+file_path <- file.choose()
 
-# 5️⃣ Ejemplo de filtrado: casos por país
-# Supongamos que hay columnas 'pais' y 'casos'
-subset(datos, pais == "España")
+# Leer JSON de manera segura
+REG_Vih <- fromJSON(readLines(file_path))
 
-# 6️⃣ Ejemplo de resumen: total de casos por año
-# Supongamos que hay columna 'anio' y 'casos'
-aggregate(casos ~ anio, data = datos, sum)
+# Extraer la lista 'fields' de cada registro
+REG_Vih_df <- map_dfr(REG_Vih, ~ .x$fields)
 
-# 7️⃣ Mostrar los primeros 10 registros
-head(datos, 10)
-'''
+# Mostrar primeras filas en tabla interactiva
+str(REG_Vih)   
+head(REG_Vih)
+```
+``` {r , eval = TRUE,message=FALSE, warning=FALSE}
+REG_Vih_df %>% count(sexo)
+REG_Vih_df %>% count(conducta_sexual)
+
+ggplot(REG_Vih_df, aes(x = edad, fill = sexo)) +
+  geom_histogram(binwidth = 5, position = "dodge")
+
+```
+
