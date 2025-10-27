@@ -2873,1504 +2873,514 @@ riesgo que podrían desencadenar el virus.</p>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(rjson)</span></code></pre></div>
 <div id="importación-datos-json" class="section level3">
 <h3><strong>Importación datos JSON:</strong></h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="fu">file.choose</span>()</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#file_path &lt;- file.choose()</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># Leer JSON de manera segura</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>REG_Vih <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="fu">readLines</span>(file_path))</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>REG_Vih <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="at">file =</span> <span class="st">&quot;Input/DATA/registro-nuevas-infecciones-por-vih.json&quot;</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co"># Extraer la lista &#39;fields&#39; de cada registro</span></span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>REG_Vih_df <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(REG_Vih, <span class="sc">~</span> .x<span class="sc">$</span>fields)</span>
 <span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
 <span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co"># Mostrar primeras filas en tabla interactiva</span></span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="fu">str</span>(REG_Vih)   </span></code></pre></div>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="fu">str</span>(REG_Vih, <span class="at">max.level =</span> <span class="dv">2</span>)   </span></code></pre></div>
 <pre><code>## List of 1707
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;8122b3501b3dc4e7bde98b46a3b67bfa33b1eb1a&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 1
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 41
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;0c3e9dbbd036b784a02eb401d56abaa3e5a88d84&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;LEON&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 2
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 18
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;d62df397c34656531d0dbf39bc2e90e48f2ad83f&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;AVILA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 3
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 36
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SintNoSIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;d42592b1bc1d5a00a1af9bdbf3c67ac60f80295d&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;SALAMANCA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 4
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 45
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;a62da4d2ef251adbd2b64cb7c62a9d7d07eb7e50&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;LEON&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 5
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 32
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;93586e5c1eb56a9edf2b0b9af6653a03daabf72e&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 6
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 25
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;da19f3d97b3de0396d77d3c8bedebad092a91757&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 7
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 32
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;eee41010f95176d90d7ce4cfa0b9a63ca216e579&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SORIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 8
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 44
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;c686e7c1b8f1bd41d0b9090a92dfe4dfbe49e0cd&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 9
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 21
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;81ed533120feedafbe9628d028cb16449eb1ffde&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SORIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 10
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 31
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;20e06483aa17d417f2baa7398213196c81bbb4d4&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 11
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 39
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;52fcd6fe9d36a1ad618885f58ee9452fc6f2b376&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 12
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 31
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;074537f5acbed72d6c21fb2f0d87465e5fa93b55&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SORIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 13
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 43
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;7a0d9c5431874e934e1fd27bc7bb08bee6c12dd4&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;AVILA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 14
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 38
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;53d2c1392410c9c46fb2d772d9839aa79911c301&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SALAMANCA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 15
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 40
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;4cd257bd4da9ea024b9bbdea32985ddb6c91735b&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 16
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 57
-##   .. ..$ ano                 : chr &quot;2010&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;a7369f53be4e3058c8b4bb28f3b90fbc5468804e&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SEGOVIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH2&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 17
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 37
-##   .. ..$ ano                 : chr &quot;2010&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;fccf498e62c35c605e66ffaf4a5d6c2cb244b122&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 18
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 31
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;cde81312b36753a174aeb8f79b759dc2828f2ead&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 19
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 47
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;991d8e80b5f968f139db3fa647e31bda8cf1a3dc&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 20
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 33
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;bd3ecf5d8c40e314fa33b8adff6419eb2d38de6b&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 21
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 46
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;bd157e431490bd2cc2c40be9a4d32e650a88c95f&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 22
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 37
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;3d8079b3afdd5699daad275bdbb161911183bb89&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;ZAMORA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 23
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 32
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;3c99d668e15a639b2120c87d852ca6c7dead16c5&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 24
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 45
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;ef3e47a066e1d74abefea17c5a5ab93081ce0a5c&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 25
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 43
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;e3eb9472bdf898ea9232c96350feef93eda68e4f&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 26
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 35
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SintNoSIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;63e0d8978852db8acc5ac6090ec0ea48d60ce60a&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 27
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 30
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;0b918ff817f2cd2c2209a638c5f8bed465aaf27f&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 28
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 24
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;75640512d434d854c5a4e8ea9d2aeb2e04197193&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 29
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 33
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;6d581d8cecd1df4002954be28998a2bd16af0ecd&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 30
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 27
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;de903bba5fabfbecc3f750bcb1db7242e3570a7f&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;ZAMORA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 31
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 45
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;124c1e26ec5199683b423cb1ac1334d81040c90d&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 32
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 22
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;a05a883df2d3135f908def1fd5290f0dd4514147&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 33
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 41
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;e569b7104abd94358d6132279c75f44c163aac0a&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 34
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 37
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SintNoSIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;9da81bd482ceb1e0836eca437c0bff181f0954c3&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 35
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 44
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;7434a46210bec0917010e013c491a2cebc6cecb7&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 36
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 64
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;aa60c8fd49532bbd24c8040d19503cff586f05f5&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 37
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 41
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;5530894110f9ec34b7b515dca2fa38b652eef0fe&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 38
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 36
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;80a5181127046126fc2aa82e9deb8cdf075c7bac&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 39
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 24
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SintNoSIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;fb4feef2606242a2a00a5dfc23e8171e548e589a&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 40
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 47
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;ce519c8e3d252e83f2d3e4cf0ae1d6728dc50ac7&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 41
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 28
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;5c9046839d47743898eb3dcbae4abb59d6f98994&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 42
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 41
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SintNoSIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;7c4162be2e293d1c957295f3bcbd7d274595f5de&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 43
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 34
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SintNoSIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;a6f78e3694dcf6842f0c2b9b75100b576a49ae80&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 44
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 48
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;18fd5c0f3ee5458e53180a4e010c7bba99db25e7&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 45
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 51
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;2454f888c71cd4a72ac0a756cf13f122a5f23708&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 46
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 49
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;8bff979276b3c24545c7451e479fa3d7a182b65b&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 47
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 51
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;ba9a88821e56d85094d6a7c8fcee5a5cb5928c92&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 48
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 34
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;5dc98cf6a8862ab12201cd5b62772b58a01f9870&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SORIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 49
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 35
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;e91766464fc8858b223f274cfe54fa63a6ed8f6e&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;BURGOS&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 50
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 46
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;8a3a8f73768b757be37fee2e0ded663509c68c76&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SEGOVIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 51
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 47
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;b723f35696b1731862aad10ad110d4e6ad4e2ff5&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SEGOVIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 52
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 32
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SintNoSIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;249feb12362d9efe17c8cd3a33874abcd02b610c&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SEGOVIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 53
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 29
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;e135d02151357b71af0bc8230659a57fc11e4d4d&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SEGOVIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 54
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 27
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;24b35494f3f351d2e066cfc7d14bd6a9bc129f2f&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SALAMANCA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 55
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 39
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;a3cef0e54faf3bd63f59b4b94ce1042e68be2758&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SALAMANCA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 56
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 38
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;2c69ba5791897fe1ecafc86d3e49974549153632&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SORIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 57
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 23
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;c3653b4d67139303bf6b92125429cd678e43e270&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SORIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 58
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 32
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;598471fcec05dc7f8b16757e0202e0d40abe5937&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;LEON&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 59
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 50
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SintNoSIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;a895f78e60cda8428f5cc91882371b4d075b4237&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SORIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 60
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 38
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SintNoSIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;bd5afbd77d113fc1382f81157e0973c2e3a9b6e9&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;SORIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 61
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 27
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;c5b0a487b1c4f55a5cbf460eaf774726459eddd6&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;PALENCIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 62
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 32
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;07c92f09feac2e923924544ab231697f3afcbff9&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 63
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 46
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;dd96bf17be617cb95075b512af99e1048a01270d&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;PALENCIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 64
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 39
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;057e18e29db403489d78badffcc0563a33a25b38&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;PALENCIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 65
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 56
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SintNoSIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;32a7ef2f81159718014c1ee409108e3c2050ce3d&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;PALENCIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 66
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 44
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;ff26ba2fe4e93c532744450e573aa3db34863222&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;PALENCIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 67
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 45
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;0cf821ef44352948493114fbb3739afedb57a3ed&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;PALENCIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 68
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 42
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;654349ca3a1f30df73f261acac522e560923642e&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;PALENCIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 69
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 39
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;39118157d777e595f01fdbbe8d26ff1e8160c366&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;PALENCIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 70
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 45
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;648dc7f5b76a98daa348ea4b9d46763311665780&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;LEON&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 71
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 21
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SintNoSIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;29bb8cae09f432c48045aa26da0911f6b75f42d9&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;LEON&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 72
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 33
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;627f35a6e0ef45a32f4077702f04c26089f3f568&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;LEON&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 73
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 35
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;0e660ad3f4b66a28353a806d79da2f5f456c25a5&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;LEON&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 74
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 30
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;da81b5ce5130efb4f6c78825e9dd87dea5981214&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;LEON&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 75
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 33
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;b0aafe6f9df29cc15cadd55f1064c27a96f5140c&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;LEON&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 76
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 37
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;9a38d15a32f1520d196d6affb15ec05b0f2e268e&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;LEON&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 77
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 66
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;ab133d4a9eb4e27806260cb5eae7703e9e1f8df6&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;LEON&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 78
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 39
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;a8ee24deccac4de5dd1854ebbdf0d02998bbae9c&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 79
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 43
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;aeffc7d6365e2ae01352c450a6cf869a0ac6104d&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 80
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 35
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;e44bb3bc9f32f9f50ba310e80219786ca5ec66ba&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 81
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 33
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;02d2f00c8d0873ec3ea849978cec08c4ffc856e5&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 82
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 50
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;101558bf69dbfe5a4ab66863c55f0a49235d1cac&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 83
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 28
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;0c661710d47179876985e37fc6190e688b3e7739&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 84
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 45
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;89835463a8fc8d31c3ce9f521d60ba7b170de679&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 85
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 63
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;1b65f24e62d348f1b231bcead9c72f9716651139&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 86
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 35
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;479213dd53ee70937833113919e9855dd8a877d2&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 87
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 48
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;29f72539a677158add1e755f46aa80b105920f10&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 88
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 31
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;17ed9a8e4f7f6994cb59da6287d4bbb31c833413&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 89
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 50
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;49467e5d7c1e0747f96026d027952a7f364de931&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 90
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 27
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;1b3588724668f996d94d91badc9bcd9bde804fdb&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;VALLADOLID&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 91
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 52
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;bb7533ddc25fc2f271fe7ce3741c090289ac2417&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SEGOVIA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 92
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 38
-##   .. ..$ ano                 : chr &quot;2010&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;a2632dbcd8f347b8206259c75cf9e537ba480620&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;LEON&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 93
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 36
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;ffb6fd47bce0ed39ac24b37782048a60005191f4&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SALAMANCA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 94
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 40
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;a1da07582507336700c88d009b1569d709d335f4&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Hetersex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SALAMANCA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Relaciones Heterosexuales&quot;
-##   .. ..$ registro            : num 95
-##   .. ..$ grupo_riesgo        : num 70
-##   .. ..$ edad                : num 41
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;SIDA&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;7de845ab3d27ca1c0e9429fd4d7a1b5f3b6063ad&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;SALAMANCA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Grupo de riesgo desconocido&quot;
-##   .. ..$ registro            : num 96
-##   .. ..$ grupo_riesgo        : num 80
-##   .. ..$ edad                : num 42
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;8a9eebdac2e736897c4b4c5a1ca780a98477e459&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SALAMANCA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 97
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 26
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;06a961636815dbd9cebe9a048a978ed375039828&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;M&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Desconocido&quot;
-##   .. ..$ provincia_residencia: chr &quot;SALAMANCA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Personas que se inyectan drogas&quot;
-##   .. ..$ registro            : num 98
-##   .. ..$ grupo_riesgo        : num 20
-##   .. ..$ edad                : num 36
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;Asintom&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##  $ :List of 4
 ##   ..$ datasetid       : chr &quot;registro-nuevas-infecciones-por-vih&quot;
 ##   ..$ recordid        : chr &quot;3d8bb8e48068fe1770fe1ee1ab845a9b69b42d3f&quot;
 ##   ..$ fields          :List of 10
-##   .. ..$ sexo                : chr &quot;H&quot;
-##   .. ..$ conducta_sexual     : chr &quot;Homosex&quot;
-##   .. ..$ provincia_residencia: chr &quot;SALAMANCA&quot;
-##   .. ..$ test_positivo       : chr &quot;VIH1&quot;
-##   .. ..$ d_grupo_riesgo      : chr &quot;Varones homosexuales / bisexuales&quot;
-##   .. ..$ registro            : num 99
-##   .. ..$ grupo_riesgo        : num 10
-##   .. ..$ edad                : num 29
-##   .. ..$ ano                 : chr &quot;2009&quot;
-##   .. ..$ estado_clinico      : chr &quot;PrimoInf&quot;
 ##   ..$ record_timestamp: chr &quot;2024-09-14T08:00:02.205+02:00&quot;
 ##   [list output truncated]</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">head</span>(REG_Vih)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">head</span>(REG_Vih,<span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## [[1]]
 ## [[1]]$datasetid
 ## [1] &quot;registro-nuevas-infecciones-por-vih&quot;
@@ -4583,49 +3593,6 @@ riesgo que podrían desencadenar el virus.</p>
 ## 
 ## 
 ## [[5]]$record_timestamp
-## [1] &quot;2024-09-14T08:00:02.205+02:00&quot;
-## 
-## 
-## [[6]]
-## [[6]]$datasetid
-## [1] &quot;registro-nuevas-infecciones-por-vih&quot;
-## 
-## [[6]]$recordid
-## [1] &quot;93586e5c1eb56a9edf2b0b9af6653a03daabf72e&quot;
-## 
-## [[6]]$fields
-## [[6]]$fields$sexo
-## [1] &quot;H&quot;
-## 
-## [[6]]$fields$conducta_sexual
-## [1] &quot;Desconocido&quot;
-## 
-## [[6]]$fields$provincia_residencia
-## [1] &quot;BURGOS&quot;
-## 
-## [[6]]$fields$test_positivo
-## [1] &quot;VIH1&quot;
-## 
-## [[6]]$fields$d_grupo_riesgo
-## [1] &quot;Grupo de riesgo desconocido&quot;
-## 
-## [[6]]$fields$registro
-## [1] 6
-## 
-## [[6]]$fields$grupo_riesgo
-## [1] 80
-## 
-## [[6]]$fields$edad
-## [1] 25
-## 
-## [[6]]$fields$ano
-## [1] &quot;2009&quot;
-## 
-## [[6]]$fields$estado_clinico
-## [1] &quot;PrimoInf&quot;
-## 
-## 
-## [[6]]$record_timestamp
 ## [1] &quot;2024-09-14T08:00:02.205+02:00&quot;</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>REG_Vih_df <span class="sc">%&gt;%</span> <span class="fu">count</span>(sexo)</span></code></pre></div>
 <div data-pagedtable="false">

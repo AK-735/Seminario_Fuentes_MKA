@@ -46,17 +46,17 @@ library(rjson)
 ### **Importación datos JSON:**
 
 ```{r , eval = TRUE,message=FALSE, warning=FALSE}
-file_path <- file.choose()
+#file_path <- file.choose()
 
 # Leer JSON de manera segura
-REG_Vih <- fromJSON(readLines(file_path))
+REG_Vih <- fromJSON(file = "Input/DATA/registro-nuevas-infecciones-por-vih.json")
 
 # Extraer la lista 'fields' de cada registro
 REG_Vih_df <- map_dfr(REG_Vih, ~ .x$fields)
 
 # Mostrar primeras filas en tabla interactiva
-str(REG_Vih)   
-head(REG_Vih)
+str(REG_Vih, max.level = 2)   
+head(REG_Vih,5)
 ```
 ``` {r , eval = TRUE,message=FALSE, warning=FALSE}
 REG_Vih_df %>% count(sexo)
