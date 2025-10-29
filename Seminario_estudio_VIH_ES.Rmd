@@ -56,7 +56,7 @@ REG_Vih_df <- map_dfr(REG_Vih, ~ .x$fields)
 
 # Mostrar primeras filas en tabla interactiva
 str(REG_Vih, max.level = 2)   
-head(REG_Vih,5)
+head(REG_Vih_df)
 ```
 ``` {r , eval = TRUE,message=FALSE, warning=FALSE}
 REG_Vih_df %>% count(sexo)
