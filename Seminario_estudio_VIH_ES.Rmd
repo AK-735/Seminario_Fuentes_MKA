@@ -39,10 +39,19 @@ Nuestro primer foco de interés es estudiar la correlación entre la orientació
 # Datos importacion
 library(tidyverse)
 library(rjson)
-
+library(DT)
 
 ```
+### **Importación datos en CSV:**
 
+```{r , eval = TRUE,message=FALSE, warning = FALSE}
+
+tabla_csv_orientacion <- read_csv("Input/DATA/VIH_orientaciónSexual.csv") 
+
+#head(tabla_csv_orientacion)
+names(tabla_csv_orientacion)
+
+```
 ### **Importación datos JSON:**
 
 ```{r , eval = TRUE,message=FALSE, warning=FALSE}
@@ -55,15 +64,26 @@ REG_Vih <- fromJSON(file = "Input/DATA/registro-nuevas-infecciones-por-vih.json"
 REG_Vih_df <- map_dfr(REG_Vih, ~ .x$fields)
 
 # Mostrar primeras filas en tabla interactiva
-str(REG_Vih, max.level = 2)   
-head(REG_Vih_df)
-```
-``` {r , eval = TRUE,message=FALSE, warning=FALSE}
-REG_Vih_df %>% count(sexo)
-REG_Vih_df %>% count(conducta_sexual)
-
-ggplot(REG_Vih_df, aes(x = edad, fill = sexo)) +
-  geom_histogram(binwidth = 5, position = "dodge")
+#str(REG_Vih_df)   
+names(REG_Vih_df)
 
 ```
+#``` {r , eval = TRUE,message=FALSE, warning=FALSE}
+#REG_Vih_df %>% count(sexo)
+#REG_Vih_df %>% count(conducta_sexual)
+
+#ggplot(REG_Vih_df, aes(x = edad, fill = sexo)) +geom_histogram(binwidth = 5, position = "dodge")
+#```
+#```{r , eval = TRUE,message=FALSE, warning=FALSE}
+#tabla_unida <- left_join(REG_Vih_df, tabla_csv_orientacion, by = c("edad" = "Edad", "sexo" = "Sexo"))
+#glimpse(tabla_unida)
+#datatable(tabla_unida, options = list(pageLength = 10, scrollX = TRUE))
+#```
+
+```{r , eval = TRUE,message=FALSE, warning=FALSE}
+tabla_unida <- left_join(REG_Vih_df, tabla_csv_orientacion, by = c("edad" = "Edad", "sexo" = "Sexo"))
+glimpse(tabla_unida)
+datatable(tabla_unida, options = list(pageLength = 10, scrollX = TRUE))
+```
+
 
