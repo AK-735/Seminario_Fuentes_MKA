@@ -2,8 +2,6 @@
 ### Autoras: Amina Khantimirova, Wiam Messari y Emma Arrieta
 ### 2º Ingeniería de la Salud
 
-<img src='./Input/IMAGES/VIH.png' align="right" height="120" />
-
 ## Introducción
 
 ## Objetivo general
