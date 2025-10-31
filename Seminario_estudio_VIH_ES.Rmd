@@ -24,7 +24,7 @@ body {
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
+[Enlace al repositorio de GitHub] (https://github.com/AK-735/Seminario_Fuentes_MKA)
 
 ## **Introducción**
 
