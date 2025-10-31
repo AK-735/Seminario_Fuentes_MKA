@@ -3,13 +3,22 @@
 ### 2º Ingeniería de la Salud
 
 ## Introducción
+El **VIH** significa virus de inmunodeficiencia humana. Daña su sistema inmunitario al destruir un tipo de glóbulo blanco que ayuda a su cuerpo a combatir las infecciones. Esto lo pone en riesgo de tener otras infecciones y enfermedades.
+
+Esta enfermedad afecta a un gran porcentaje de la población española, resultando en un foco de malestar. En este seminario estudiaremos aquellos indicativos que potencian la expresión de dicha enfermedad. 
+
+Nuestro primer foco de interés es estudiar la correlación entre la orientación sexual y el VIH, pero también incluiremos otros factores de riesgo que podrían desencadenar el virus.
+
 
 ## Objetivo general
 Conocer mediante el estudio de tablas la correlación que puede llegar a existir entre entre la orientación sexual de un individuo y su predisposición a contraer la enfermedad del VIH.
 
+
 ## Objetivos específicos
 
+
 ## Metodología y resultados
+
 
 ## Conclusiones generales
 
