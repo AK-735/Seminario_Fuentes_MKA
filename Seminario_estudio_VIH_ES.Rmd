@@ -45,7 +45,7 @@ Conocer mediante el estudio de tablas la correlación que puede llegar a existir
 - ¿Cuál es la comunidad autónoma con más casos de VIH por conducta homosexual? ¿Y heterosexual?
 - ¿Cuál es el motivo más común por el que se produce la enfermedad en dicha comunidad autónoma?
 - ¿Qué porcentaje de mujeres tiene la enfermedad con menos de 40 años en la provincia de Burgos?
-- ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2009 a 2023?
+- ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2013 a 2023?
 
 ## **Metodología**
 
