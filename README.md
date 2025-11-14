@@ -1,3 +1,5 @@
+<img src='./Input/IMAGES/VIH_readme.png' align="right" height="120" />
+
 # Seminario_Fuentes_WAM
 ### Autoras: Amina Khantimirova, Wiam Messari y Emma Arrieta
 ### 2º Ingeniería de la Salud
