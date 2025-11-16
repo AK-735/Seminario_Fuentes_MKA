@@ -56,6 +56,7 @@ Para realizar nuestro estudio, importamos las tablas que tenemos guardadas en la
 library(tidyverse)
 library(rjson)
 library(DT)
+library(readODS) #hay que descargarse el paquete readODS
 
 ```
 ### **Importación datos en CSV:**
@@ -68,6 +69,15 @@ tabla_csv_orientacion <- read_csv("Input/DATA/VIH_orientaciónSexual.csv")
 names(tabla_csv_orientacion)
 
 ```
+### **Importación datos en ods:**
+```{r, eval = TRUE,message=FALSE, warning = FALSE}
+Modotransmisioncompleto <- read_ods("Input/DATA/Modotranscompleto.ods")
+ModotransmisionVIH <- read_ods("Input/DATA/modotransmisionVIH.ods")
+motivosVIH <- read_ods("Input/DATA/motivosVIH.ods")
+yearSexoVIH <- read_ods("Input/DATA/yearSexoVIH.ods")
+
+```
+
 ### **Importación datos JSON:**
 
 ```{r , eval = TRUE,message=FALSE, warning=FALSE}
@@ -101,6 +111,91 @@ tabla_unida <- left_join(REG_Vih_df, tabla_csv_orientacion, by = c("edad" = "Eda
 glimpse(tabla_unida)
 datatable(tabla_unida, options = list(pageLength = 10, scrollX = TRUE))
 ```
+
+### **Comparación casos VIH/conducta**
+
+Esta tabla reune aquellos casos de VIH provocados por conductas sexuales, el foco principal son los hombres por lo que aquí son nuestro sujeto de estudio.
+
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+
+prevalencia_por_conducta <- tabla_csv_orientacion %>%
+  filter(`Hábito sexual` %in% c("HSH", "Heterosexual")) %>%
+  group_by(`Hábito sexual`) %>%
+  summarise(
+    Casos = n(),
+    VIH_Positivo = sum(VIH == "SÍ"), 
+  ) %>%
+  mutate(
+    `Tasa de Prevalencia (%)` = (VIH_Positivo / Casos) * 100
+  )
+
+datatable(prevalencia_por_conducta, 
+          caption = "Tasa de Prevalencia de VIH por Hábito Sexual")
+
+print(prevalencia_por_conducta)
+```
+Aquí tenemos una comparación de aquellos que mantienen relaciones sexuales siempre con preservativo y los que no. Aquellos que mantiene realciones homosexuales no suelen usar preservativos con la misma frecuencia que aquellos hombres que mantienen relaciones heterosexuales.
+Esto puede ser debido a que no existe riesgo de embarazo. Por ello es muy importante enfatizar en la población española sobre la importancia de preservativo,más allá del deseo de no concebir:
+
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+
+uso_preservativo <- tabla_csv_orientacion %>%
+  filter(`Hábito sexual` %in% c("HSH", "Heterosexual")) %>%
+  group_by(`Hábito sexual`) %>%
+  count(`preservativo siempre`, name = "Frecuencia") %>%
+
+  group_by(`Hábito sexual`) %>%
+  mutate(
+    Total_Grupo = sum(Frecuencia),
+    `Porcentaje (%)` = (Frecuencia / Total_Grupo) * 100
+  ) %>%
+  ungroup()
+
+uso_siempre <- uso_preservativo %>% filter(`preservativo siempre` == "SÍ")
+
+datatable(uso_siempre, 
+          caption = "Porcentaje de Uso de Preservativo 'Siempre'")
+```
+
+Aquí empleamos una tabla anterior para estudiar si el numero de parejas afecta en el desarrollo del VIH. Cabe destacar que aquí se han incluido tanto como hombre como podemos presenciar en la tabla para enfatizar la correlación que existe entre ser hombre y padecer esta enfermedad:
+
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+
+tabla_unida$edad <- as.numeric(tabla_unida$edad) 
+
+riesgo_sifilis <- tabla_unida %>%
+
+  filter(d_grupo_riesgo %in% c("Varones homosexuales / bisexuales", "Relaciones Heterosexuales")) %>%
+
+  group_by(d_grupo_riesgo, `Estado sífilis`) %>% 
+
+  summarise(
+    Casos = n(),
+    `Edad Promedio` = mean(edad, na.rm = TRUE),
+  ) %>%
+  
+  arrange(desc(Casos)) 
+
+datatable(riesgo_sifilis, 
+          caption = "Distribución por Edad, Riesgo y Sífilis")
+
+promedio_parejas_clinico <- tabla_unida %>%
+
+  mutate(`Parejas ultimo año` = as.numeric(`Parejas ultimo año`)) %>%
+  group_by(sexo, estado_clinico) %>%
+
+  summarise(
+    `Promedio de Parejas` = mean(`Parejas ultimo año`, na.rm = TRUE),
+    `Total de Casos` = n(),
+  ) %>%
+
+  filter(estado_clinico %in% c("Asintom", "SIDA")) %>%
+  arrange(sexo, desc(`Total de Casos`))
+datatable(promedio_parejas_clinico, 
+          caption = "Relación entre Parejas y Estado Clínico por Sexo")
+```
+
+
 
 ## **Resultados**
 
