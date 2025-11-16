@@ -44,7 +44,7 @@ Conocer mediante el estudio de tablas la correlación que puede llegar a existir
 
 - ¿Cuál es la comunidad autónoma con más casos de VIH en 2023 por conducta homosexual? ¿Y heterosexual?
 - ¿Cuál es el motivo más común por el que se produce la enfermedad en dicha comunidad autónoma?
-- ¿Qué porcentaje de mujeres tiene la enfermedad con menos de 40 años en la provincia de Burgos?
+- ¿Qué porcentaje de hombres tiene la enfermedad con menos de 40 años en la provincia de Burgos?
 - ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2013 a 2023?
 
 ## **Metodología**
@@ -114,7 +114,7 @@ datatable(tabla_unida, options = list(pageLength = 10, scrollX = TRUE))
 
 ### **Comparación casos VIH/conducta**
 
-Esta tabla reune aquellos casos de VIH provocados por conductas sexuales, el foco principal son los hombres por lo que aquí son nuestro sujeto de estudio.
+Esta tabla reúne aquellos casos de VIH provocados por conductas sexuales. El foco principal son los hombres, por lo que aquí son nuestro sujeto de estudio.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -134,8 +134,8 @@ datatable(prevalencia_por_conducta,
 
 print(prevalencia_por_conducta)
 ```
-Aquí tenemos una comparación de aquellos que mantienen relaciones sexuales siempre con preservativo y los que no. Aquellos que mantiene realciones homosexuales no suelen usar preservativos con la misma frecuencia que aquellos hombres que mantienen relaciones heterosexuales.
-Esto puede ser debido a que no existe riesgo de embarazo. Por ello es muy importante enfatizar en la población española sobre la importancia de preservativo,más allá del deseo de no concebir:
+Aquí tenemos una comparación de aquellos que mantienen relaciones sexuales siempre con preservativo y los que no. Aquellos que mantienen relaciones homosexuales no suelen usar preservativos con la misma frecuencia que aquellos hombres que mantienen relaciones heterosexuales.
+Esto puede ser debido a que no existe riesgo de embarazo. Por ello, es muy importante enfatizar en la población española sobre la importancia de preservativo, más allá del deseo de no concebir:
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -157,7 +157,7 @@ datatable(uso_siempre,
           caption = "Porcentaje de Uso de Preservativo 'Siempre'")
 ```
 
-Aquí empleamos una tabla anterior para estudiar si el numero de parejas afecta en el desarrollo del VIH. Cabe destacar que aquí se han incluido tanto como hombre como podemos presenciar en la tabla para enfatizar la correlación que existe entre ser hombre y padecer esta enfermedad:
+Aquí empleamos una tabla anterior para estudiar si el número de parejas afecta en el desarrollo del VIH. Cabe destacar que aquí se han incluido tanto como hombre como podemos presenciar en la tabla para enfatizar la correlación que existe entre ser hombre y padecer esta enfermedad:
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
