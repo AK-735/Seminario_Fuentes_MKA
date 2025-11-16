@@ -126,7 +126,7 @@ prevalencia_por_conducta <- tabla_csv_orientacion %>%
     VIH_Positivo = sum(VIH == "SÍ"), 
   ) %>%
   mutate(
-    `Tasa de Prevalencia (%)` = (VIH_Positivo / Casos) * 100
+    `Tasa de Prevalencia (%)` = round((VIH_Positivo / Casos) * 100, 2)
   )
 
 datatable(prevalencia_por_conducta, 
@@ -147,7 +147,7 @@ uso_preservativo <- tabla_csv_orientacion %>%
   group_by(`Hábito sexual`) %>%
   mutate(
     Total_Grupo = sum(Frecuencia),
-    `Porcentaje (%)` = (Frecuencia / Total_Grupo) * 100
+    `Porcentaje (%)` = round((Frecuencia / Total_Grupo) * 100, 2)
   ) %>%
   ungroup()
 
@@ -171,7 +171,7 @@ riesgo_sifilis <- tabla_unida %>%
 
   summarise(
     Casos = n(),
-    `Edad Promedio` = mean(edad, na.rm = TRUE),
+    `Edad Promedio` = round(mean(edad, na.rm = TRUE), 2),
   ) %>%
   
   arrange(desc(Casos)) 
@@ -185,7 +185,7 @@ promedio_parejas_clinico <- tabla_unida %>%
   group_by(sexo, estado_clinico) %>%
 
   summarise(
-    `Promedio de Parejas` = mean(`Parejas ultimo año`, na.rm = TRUE),
+    `Promedio de Parejas` = round(mean(`Parejas ultimo año`, na.rm = TRUE), 2),
     `Total de Casos` = n(),
   ) %>%
 
