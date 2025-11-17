@@ -42,11 +42,12 @@ Conocer mediante el estudio de tablas la correlación que puede llegar a existir
 
 ## **Objetivos específicos**
 
-- ¿Cuál es la comunidad autónoma con más casos de VIH en 2023 por conducta homosexual? ¿Y heterosexual?
-- ¿Cuál es el motivo más común por el que se produce la enfermedad en dicha comunidad autónoma?
-- ¿Qué porcentaje de hombres tiene la enfermedad con menos de 40 años en la provincia de Burgos?
-- ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2013 a 2023?
-- ¿Hay más casos de VIH cuanto mayor es la población?
+1. a) ¿Cuál es la comunidad autónoma con más casos de VIH en 2023 por conducta homosexual?
+   b) ¿Y heterosexual?
+2. ¿Cuál es el motivo más común por el que se produce la enfermedad en dicha comunidad autónoma?
+3. ¿Qué porcentaje de hombres tiene la enfermedad con menos de 40 años en la provincia de Burgos?
+4. ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2013 a 2023?
+5. ¿Hay más casos de VIH cuanto mayor es la población?
 
 ## **Metodología**
 
@@ -194,6 +195,25 @@ promedio_parejas_clinico <- tabla_unida %>%
   arrange(sexo, desc(`Total de Casos`))
 datatable(promedio_parejas_clinico, 
           caption = "Relación entre Parejas y Estado Clínico por Sexo")
+```
+
+Primera pregunta a)
+
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+homosexuales <- full_join(Modotransmisioncompleto, ModotransmisionVIH, by = "Año de diagnóstico")
+filtrado_homo <- homosexuales %>%
+  group_by(`CCAA de notificación`)
+
+filtrado_homo
+```
+
+Primera pregunta b)
+
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+prueba <- ModotransmisionVIH
+  filter(ModotransmisionVIH, `Año de diagnóstico` == 2023)
+
+
 ```
 
 
