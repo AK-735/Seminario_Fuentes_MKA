@@ -44,8 +44,9 @@ Conocer mediante el estudio de tablas la correlación que puede llegar a existir
 
 - ¿Cuál es la comunidad autónoma con más casos de VIH en 2023 por conducta homosexual? ¿Y heterosexual?
 - ¿Cuál es el motivo más común por el que se produce la enfermedad en dicha comunidad autónoma?
-- ¿Qué porcentaje de mujeres tiene la enfermedad con menos de 40 años en la provincia de Burgos?
+- ¿Qué porcentaje de hombres tiene la enfermedad con menos de 40 años en la provincia de Burgos?
 - ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2013 a 2023?
+- ¿Hay más casos de VIH cuanto mayor es la población?
 
 ## **Metodología**
 
@@ -114,7 +115,7 @@ datatable(tabla_unida, options = list(pageLength = 10, scrollX = TRUE))
 
 ### **Comparación casos VIH/conducta**
 
-Esta tabla reune aquellos casos de VIH provocados por conductas sexuales, el foco principal son los hombres por lo que aquí son nuestro sujeto de estudio.
+Esta tabla reúne aquellos casos de VIH provocados por conductas sexuales. El foco principal son los hombres, por lo que aquí son nuestro sujeto de estudio.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -126,7 +127,7 @@ prevalencia_por_conducta <- tabla_csv_orientacion %>%
     VIH_Positivo = sum(VIH == "SÍ"), 
   ) %>%
   mutate(
-    `Tasa de Prevalencia (%)` = (VIH_Positivo / Casos) * 100
+    `Tasa de Prevalencia (%)` = round((VIH_Positivo / Casos) * 100, 2)
   )
 
 datatable(prevalencia_por_conducta, 
@@ -134,8 +135,8 @@ datatable(prevalencia_por_conducta,
 
 print(prevalencia_por_conducta)
 ```
-Aquí tenemos una comparación de aquellos que mantienen relaciones sexuales siempre con preservativo y los que no. Aquellos que mantiene realciones homosexuales no suelen usar preservativos con la misma frecuencia que aquellos hombres que mantienen relaciones heterosexuales.
-Esto puede ser debido a que no existe riesgo de embarazo. Por ello es muy importante enfatizar en la población española sobre la importancia de preservativo,más allá del deseo de no concebir:
+Aquí tenemos una comparación de aquellos que mantienen relaciones sexuales siempre con preservativo y los que no. Aquellos que mantienen relaciones homosexuales no suelen usar preservativos con la misma frecuencia que aquellos hombres que mantienen relaciones heterosexuales.
+Esto puede ser debido a que no existe riesgo de embarazo. Por ello, es muy importante enfatizar en la población española sobre la importancia de preservativo, más allá del deseo de no concebir:
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -147,7 +148,7 @@ uso_preservativo <- tabla_csv_orientacion %>%
   group_by(`Hábito sexual`) %>%
   mutate(
     Total_Grupo = sum(Frecuencia),
-    `Porcentaje (%)` = (Frecuencia / Total_Grupo) * 100
+    `Porcentaje (%)` = round((Frecuencia / Total_Grupo) * 100, 2)
   ) %>%
   ungroup()
 
@@ -157,7 +158,7 @@ datatable(uso_siempre,
           caption = "Porcentaje de Uso de Preservativo 'Siempre'")
 ```
 
-Aquí empleamos una tabla anterior para estudiar si el numero de parejas afecta en el desarrollo del VIH. Cabe destacar que aquí se han incluido tanto como hombre como podemos presenciar en la tabla para enfatizar la correlación que existe entre ser hombre y padecer esta enfermedad:
+Aquí empleamos una tabla anterior para estudiar si el número de parejas afecta en el desarrollo del VIH. Cabe destacar que aquí se han incluido tanto como hombre como podemos presenciar en la tabla para enfatizar la correlación que existe entre ser hombre y padecer esta enfermedad:
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -171,7 +172,7 @@ riesgo_sifilis <- tabla_unida %>%
 
   summarise(
     Casos = n(),
-    `Edad Promedio` = mean(edad, na.rm = TRUE),
+    `Edad Promedio` = round(mean(edad, na.rm = TRUE), 2),
   ) %>%
   
   arrange(desc(Casos)) 
@@ -185,7 +186,7 @@ promedio_parejas_clinico <- tabla_unida %>%
   group_by(sexo, estado_clinico) %>%
 
   summarise(
-    `Promedio de Parejas` = mean(`Parejas ultimo año`, na.rm = TRUE),
+    `Promedio de Parejas` = round(mean(`Parejas ultimo año`, na.rm = TRUE), 2),
     `Total de Casos` = n(),
   ) %>%
 
@@ -218,8 +219,12 @@ print(causa_VIH)
 
 
 ## **Resultados**
+Claramente, podemos observar en la primera tabla que los hombres homosexuales tienen más predisposición a contraer la enfermedad, que los hombres heterosexuales.
+
+Además, la cuarta tabla muestra que hay más hombres homosexuales que sufren la enfermedad de los que, aunque la muestren, son asintomáticos.
 
 ## **Conclusiones generales**
+En conclusión, hay mayor número de hombres homosexuales, en comparación con los heterosexuales, que presentan la enfermedad.
 
 ## **Referencias**
 - Sec. (n.d.). Encuesta de Anticoncepción en España 2024. Sociedad Española De Contracepción. Retrieved October 15, 2025, from https://sec.es/encuesta-de-anticoncepcion-en-espana-2024/
