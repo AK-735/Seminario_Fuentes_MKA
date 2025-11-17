@@ -46,6 +46,7 @@ Conocer mediante el estudio de tablas la correlación que puede llegar a existir
 - ¿Cuál es el motivo más común por el que se produce la enfermedad en dicha comunidad autónoma?
 - ¿Qué porcentaje de hombres tiene la enfermedad con menos de 40 años en la provincia de Burgos?
 - ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2013 a 2023?
+- ¿Hay más casos de VIH cuanto mayor es la población?
 
 ## **Metodología**
 
@@ -198,8 +199,12 @@ datatable(promedio_parejas_clinico,
 
 
 ## **Resultados**
+Claramente, podemos observar en la primera tabla que los hombres homosexuales tienen más predisposición a contraer la enfermedad, que los hombres heterosexuales.
+
+Además, la cuarta tabla muestra que hay más hombres homosexuales que sufren la enfermedad de los que, aunque la muestren, son asintomáticos.
 
 ## **Conclusiones generales**
+En conclusión, hay mayor número de hombres homosexuales, en comparación con los heterosexuales, que presentan la enfermedad.
 
 ## **Referencias**
 - Sec. (n.d.). Encuesta de Anticoncepción en España 2024. Sociedad Española De Contracepción. Retrieved October 15, 2025, from https://sec.es/encuesta-de-anticoncepcion-en-espana-2024/
