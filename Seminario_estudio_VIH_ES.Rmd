@@ -55,6 +55,8 @@ Para realizar nuestro estudio, importamos las tablas que tenemos guardadas en la
 
 ```{r , eval = TRUE,message=FALSE, warning=FALSE}
 # Datos importacion
+
+#install.packages("readODS")
 library(tidyverse)
 library(rjson)
 library(DT)
@@ -136,6 +138,39 @@ datatable(prevalencia_por_conducta,
 
 print(prevalencia_por_conducta)
 ```
+
+#``` {r , eval = TRUE,message=FALSE, warning=FALSE}
+#ggplot(data = prevalencia_por_conducta, aes(x = `Hábito sexual`, y =`Tasa de Prevalencia(%)`))+geom_bar(aes(fill =# clarity), colour = "black")
+#```
+
+
+
+
+
+
+
+```{r , eval = TRUE, message=FALSE, warning=FALSE}
+
+ggplot(data = prevalencia_por_conducta, 
+       aes(x = `Hábito sexual`, 
+           y = `Tasa de Prevalencia (%)`,
+           fill = `Hábito sexual`)) +
+  
+  geom_col(colour = "black", width = 0.6) +
+  
+  geom_text(aes(label = paste0(`Tasa de Prevalencia (%)`, "%")), 
+            vjust = -0.6, size = 4) +
+  
+  labs(
+    title = "Gráfico de barras de la prevalencia de VIH",
+    x = "Hábito Sexual",
+    y = "Tasa de Prevalencia (%)",
+    subtitle = "Tasa de Prevalencia de VIH por Hábito Sexual"
+  ) 
+```
+
+
+
 Aquí tenemos una comparación de aquellos que mantienen relaciones sexuales siempre con preservativo y los que no. Aquellos que mantienen relaciones homosexuales no suelen usar preservativos con la misma frecuencia que aquellos hombres que mantienen relaciones heterosexuales.
 Esto puede ser debido a que no existe riesgo de embarazo. Por ello, es muy importante enfatizar en la población española sobre la importancia de preservativo, más allá del deseo de no concebir:
 
@@ -158,6 +193,31 @@ uso_siempre <- uso_preservativo %>% filter(`preservativo siempre` == "SÍ")
 datatable(uso_siempre, 
           caption = "Porcentaje de Uso de Preservativo 'Siempre'")
 ```
+
+
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+ggplot(data = uso_preservativo, aes(x=`Hábito sexual`, y = `Porcentaje (%)`, color = `preservativo siempre`)) +
+  geom_point(size = 8, shape = 18) + 
+  geom_line(aes(group = `preservativo siempre`), size = 0.5, linetype = "dashed") + 
+  geom_text(aes(label = paste0(`Porcentaje (%)`, "%")), 
+            color = "black", 
+            size = 3.5, 
+            vjust = -1.5,
+            hjust = 0.25) +
+  labs(
+    title = "Comparación del Uso 'Siempre' de Preservativo",
+    subtitle = "Porcentaje de hombres que usan preservativo en cada hábito sexual",
+    x = "Hábito Sexual",
+    y = "Porcentaje de Uso (%)",
+    color = "¿Preservativo siempre?"
+    
+  )+
+  scale_y_continuous(labels = scales::percent_format(scale = 1), limits = c(0, 100)) +
+  theme_minimal(base_size = 14)
+
+
+```
+
 
 Aquí empleamos una tabla anterior para estudiar si el número de parejas afecta en el desarrollo del VIH. Cabe destacar que aquí se han incluido tanto como hombre como podemos presenciar en la tabla para enfatizar la correlación que existe entre ser hombre y padecer esta enfermedad:
 
@@ -195,6 +255,75 @@ promedio_parejas_clinico <- tabla_unida %>%
   arrange(sexo, desc(`Total de Casos`))
 datatable(promedio_parejas_clinico, 
           caption = "Relación entre Parejas y Estado Clínico por Sexo")
+
+
+
+tabla_unida
+```
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+data_dispersion <- tabla_unida %>%
+  filter(estado_clinico %in% c("Asintom", "SIDA")) %>%
+  mutate(edad = as.numeric(edad),
+         `Parejas ultimo año` = as.numeric(`Parejas ultimo año`)) %>%
+  drop_na(edad, `Parejas ultimo año`, estado_clinico) 
+
+
+# Generamos el gráfico de dispersión con línea de regresión (geom_smooth)
+ggplot(data = data_dispersion, 
+       aes(x = edad, 
+           y = `Parejas ultimo año`, 
+           color = estado_clinico)) +
+  
+  geom_point(alpha = 0.6, size = 2) +
+  
+  # 2. Capa de Regresión (geom_smooth)
+  # method = "lm" traza una línea de regresión lineal (modelo lineal)
+  # El color de la línea se mapea automáticamente a 'estado_clinico'
+  geom_smooth(method = "lm", 
+              se = TRUE,
+              size = 1.2) + 
+  
+  labs(
+    title = "Relación entre Edad y Número de Parejas por Estado Clínico del VIH",
+    subtitle = "Análisis de regresión lineal con intervalo de confianza",
+    x = "Edad del Individuo (años)",
+    y = "Número de Parejas en el Último Año",
+    color = "Estado Clínico"
+  ) +
+  
+  scale_color_manual(values = c("Asintom" = "blue", "SIDA" = "red")) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+
+
+```
+
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+
+
+
+ggplot(data = riesgo_sifilis, aes(x = `Casos`, y = `Estado sífilis` , color = `Estado sífilis` ))+
+  geom_point(size = 2)+
+  labs(
+    title = "Número de casos por estado de sifilis",
+    y = "Estado de Sífilis",
+    x = "Numero de casos"
+  )+
+  theme_classic()
+
+```
+
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+ggplot(data = tabla_unida, aes(x= `edad`, y = `d_grupo_riesgo`, coulor = `d_grupo_riesgo`))+
+  geom_boxplot(size = 1.5)+
+  labs(
+    title = "Distribucion de la edad por grupo de riesgo",
+    x = "Edad",
+    y = "Grupo de Riesgo",
+  )+
+  theme_classic()
+
+
 ```
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 causa_VIH <- 
