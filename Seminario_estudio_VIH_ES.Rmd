@@ -194,6 +194,26 @@ promedio_parejas_clinico <- tabla_unida %>%
 datatable(promedio_parejas_clinico, 
           caption = "Relación entre Parejas y Estado Clínico por Sexo")
 ```
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+causa_VIH <- 
+  motivosVIH %>%
+  filter(`Edad` %in% c( "Menos de 40 años", "40 y más años", na.rm = FALSE),
+        `Motivo` %in% c("Fallo del método anticonceptivo utilizado", "Por no utilizar métodos anticonceptivos", "Mi pareja quería", "Otros", "Total")) %>%
+  group_by(`Edad`, `Motivo`) %>%
+  summarise(contar = n()) %>%
+  mutate(
+    porcentaje = (contar / sum(contar))*100
+  ) %>%
+  ungroup %>%
+    arrange(`Edad`, desc(contar))
+
+datatable(causa_VIH, 
+          caption = "Tasa de Prevalencia de VIH por Hábito Sexual")
+
+print(causa_VIH)
+
+```
+
 
 
 
