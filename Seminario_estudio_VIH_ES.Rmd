@@ -221,8 +221,12 @@ Primera pregunta a)
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 homosexuales <- full_join(Modotransmisioncompleto, ModotransmisionVIH, by = "Año de diagnóstico")
+homosexuales$`Año de diagnóstico` <- as.numeric(homosexuales$`Año de diagnóstico`)
 filtrado_homo <- homosexuales %>%
-  group_by(`CCAA de notificación`)
+  select(`CCAA de notificación`, `Año de diagnóstico`) %>%
+  drop_na(`Año de diagnóstico`) %>%
+  filter(`Año de diagnóstico` >= 2013 & `Año de diagnóstico` <= 2023)
+  
 
 filtrado_homo
 ```
@@ -230,8 +234,22 @@ filtrado_homo
 Primera pregunta b)
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
-prueba <- ModotransmisionVIH
-  filter(ModotransmisionVIH, `Año de diagnóstico` == 2023)
+unique(Modotransmisioncompleto$`Modo de transmisión`)
+Modotransmisioncompleto %>%
+  filter(str_detect(`Modo de transmisión`, regex("HSH", ignore_case = TRUE)))
+
+homosexuales <- full_join(Modotransmisioncompleto, ModotransmisionVIH, by = "Año de diagnóstico")
+homosexuales$`Año de diagnóstico` <- as.numeric(homosexuales$`Año de diagnóstico`)
+filtrado_homo <- homosexuales %>%
+  filter(`Año de diagnóstico` == 2023, str_detect(`Modo de transmisión`, regex("HSH", ignore_case = TRUE)))
+
+casos_ccaa <- filtrado_homo %>%
+  group_by(`CCAA de notificación`) %>%
+  summarise(Casos = n()) %>%
+  arrange(desc(Casos))
+
+comunidad_max <- casos_ccaa %>% slice(1)
+comunidad_max
 
 
 ```
