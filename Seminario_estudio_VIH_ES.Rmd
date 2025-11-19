@@ -51,7 +51,7 @@ Conocer mediante el estudio de tablas la correlación que puede llegar a existir
 
 ## **Metodología**
 
-Para realizar nuestro estudio, importamos las tablas que tenemos guardadas en la carpeta DATA de nuestro repositorio. Ahora hacemos un left join, con el objetivo de analizar los datos de las tablas "registro-nuevas-infecciones-por-vih.json" y "VIH_orientaciónSexual.csv".
+Para realizar nuestro estudio, importamos las tablas que tenemos guardadas en la carpeta DATA de nuestro repositorio.
 
 ```{r , eval = TRUE,message=FALSE, warning=FALSE}
 # Datos importacion
@@ -109,6 +109,8 @@ names(REG_Vih_df)
 #glimpse(tabla_unida)
 #datatable(tabla_unida, options = list(pageLength = 10, scrollX = TRUE))
 #```
+
+Ahora hacemos un left join, con el objetivo de analizar los datos de las tablas "registro-nuevas-infecciones-por-vih.json" y "VIH_orientaciónSexual.csv".
 
 ```{r , eval = TRUE,message=FALSE, warning=FALSE}
 tabla_unida <- left_join(REG_Vih_df, tabla_csv_orientacion, by = c("edad" = "Edad", "sexo" = "Sexo"))
@@ -342,26 +344,6 @@ datatable(causa_VIH,
           caption = "Tasa de Prevalencia de VIH por Hábito Sexual")
 
 print(causa_VIH)
-
-```
-
-
-Primera pregunta a)
-
-```{r, eval = TRUE,message=FALSE, warning=FALSE}
-homosexuales <- full_join(Modotransmisioncompleto, ModotransmisionVIH, by = "Año de diagnóstico")
-homosexuales$`Año de diagnóstico` <- as.numeric(homosexuales$`Año de diagnóstico`)
-filtrado_homo <- homosexuales %>%
-  filter(`Año de diagnóstico` == 2023 & `Modo de transmisión` == "HSH")
-
-casos_ccaa <- filtrado_homo %>%
-  group_by(`CCAA de notificación`) %>%
-  summarise(Casos = n()) %>%
-  arrange(desc(Casos))
-
-comunidad_max <- casos_ccaa %>% slice(1)
-comunidad_max
-
 
 ```
 
