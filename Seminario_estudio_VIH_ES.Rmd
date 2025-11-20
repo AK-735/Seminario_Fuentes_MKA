@@ -350,7 +350,7 @@ print(causa_VIH)
 tabla_completa <- full_join(REG_Vih_df, tabla_csv_orientacion, by = c("edad" = "Edad", "sexo" = "Sexo"))
 
 incidencia <- tabla_completa %>%
-  filter(conducta_sexual %in% c("Homosex", "Hetersex")) %>%
+  filter(conducta_sexual %in% c("Homosex", "Hetersex", "Desconocido")) %>%
   group_by(conducta_sexual) %>%
   summarise(
     Casos = n())
