@@ -95,6 +95,7 @@ REG_Vih_df <- map_dfr(REG_Vih, ~ .x$fields)
 # Mostrar primeras filas en tabla interactiva
 #str(REG_Vih_df)   
 names(REG_Vih_df)
+REG_Vih_df
 
 ```
 #``` {r , eval = TRUE,message=FALSE, warning=FALSE}
@@ -353,14 +354,132 @@ incidencia <- tabla_completa %>%
   filter(conducta_sexual %in% c("Homosex", "Hetersex")) %>%
   group_by(conducta_sexual) %>%
   summarise(
-    Casos = n()) %>%
+    Casos = n()) 
 
 datatable(incidencia, 
           caption = "Número de casos por conducta sexual")
 
 print(incidencia)
+
+
 ```
 
+<<<<<<< Updated upstream
+=======
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+casos_2023 <- REG_Vih_df %>%
+  filter(ano == "2023", conducta_sexual %in% c("Homosex","Hetersex"))%>%
+  count(provincia_residencia,conducta_sexual,name = "Casos")
+
+casos_mas_por_conducta <- casos_2023 %>%
+  group_by(conducta_sexual) %>%
+  filter(Casos == max(Casos)) %>%
+  ungroup()
+datatable(casos_mas_por_conducta, caption = "Provincia con más casos de VIH en 2023")
+casos_mas_por_conducta
+  
+
+
+
+```
+
+
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+
+casos_por_provincia_conteo <- REG_Vih_df %>%
+  count(provincia_residencia, name = "Total_Casos")
+  
+
+ggplot(data = casos_por_provincia_conteo, 
+       aes(x = Total_Casos, 
+           y = provincia_residencia))+
+  
+  geom_point(size = 4, 
+             color = "deeppink") +
+  
+  geom_text(aes(label = Total_Casos), 
+            hjust = 0.35, 
+            vjust = 2.25,
+            size = 3.25, 
+            color = "black") +
+  
+  labs(
+    title = "Distribución de Casos de VIH por Provincia",
+    x = "Total de Casos de VIH Registrados",
+    y = "Provincia de Residencia"
+  )  
+  
+
+```
+Quiero hacer 4. ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2013 a 2023?
+
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+tendencia_anual <- REG_Vih_df %>%
+  mutate(ano_num = as.numeric(ano)) %>%
+  filter(ano_num >= 2013 & ano_num <= 2023) %>%
+  group_by(ano_num)%>%
+  count(ano_num, name = "Casos_Nuevos")
+
+ggplot(data = tendencia_anual, aes(x =ano_num, y = Casos_Nuevos))+
+  geom_point(color = "green",size = 3)+
+  geom_line(color = "red",size = 1.5) +
+  geom_text(aes(label = Casos_Nuevos), 
+              vjust = -1.7, size = 3.5, color = "black") +
+    
+
+    labs(
+      title = "Evolución Anual de Nuevas Infecciones por VIH (2013-2023)",
+      x = "Año de Diagnóstico",
+      y = "Número de Nuevos Casos Registrados"
+    ) +
+  
+  theme_minimal(base_size = 14) 
+  
+
+
+```
+Correlacion si la caida o subida de casos esta acompañado por un cambio en los factores de riesgo
+
+
+
+corrleacion_tendencia_motivo <- tendencia_anual %>% 
+  mutate(`Año de diagnóstico`= as.character(ano_num))%>%
+  inner_join(
+    Modotransmisioncompleto, by ="Año de diagnóstico"
+  )%>%
+  group_by(`Año de diagnóstico`)%>%
+  mutate(
+    Porcentaje = round((Casos / Casos_Nuevos)*100,2)
+  )%>%
+  ungroup() %>%
+  select(
+    Año = `Año de diagnóstico`,
+    Casos_Totales_Anuales = Casos_Nuevos,
+    `CCAA de Notificación`,
+    `Modo de Transmisión`,
+    `Casos del Modo`,
+    `Porcentaje del Total (%)` = Porcentaje_Modo
+  ) %>%
+  arrange(Año, desc(`Porcentaje del Total (%)`))
+datatable(correlacion_tendencia_motivo_completo, 
+          caption = "Correlación: Tendencia Anual vs. Modo y CCAA de Transmisión",
+          options = list(pageLength = 10, scrollX = TRUE))
+
+print(correlacion_tendencia_motivo_completo)
+
+
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+
+#
+
+```
+
+
+
+análisis de Casos por Sexo con el análisis de Casos por Grupo de Riesgo a lo largo del tiempo.
+
+
+>>>>>>> Stashed changes
 ## **Resultados**
 Claramente, podemos observar en la primera tabla que los hombres homosexuales tienen más predisposición a contraer la enfermedad, que los hombres heterosexuales.
 
