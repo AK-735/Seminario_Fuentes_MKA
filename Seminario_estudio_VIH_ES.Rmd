@@ -353,7 +353,7 @@ incidencia <- tabla_completa %>%
   filter(conducta_sexual %in% c("Homosex", "Hetersex")) %>%
   group_by(conducta_sexual) %>%
   summarise(
-    Casos = n()) %>%
+    Casos = n())
 
 datatable(incidencia, 
           caption = "Número de casos por conducta sexual")
