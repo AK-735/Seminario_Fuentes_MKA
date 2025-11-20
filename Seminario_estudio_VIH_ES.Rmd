@@ -354,6 +354,7 @@ incidencia <- tabla_completa %>%
   filter(conducta_sexual %in% c("Homosex", "Hetersex")) %>%
   group_by(conducta_sexual) %>%
   summarise(
+
     Casos = n()) 
 
 datatable(incidencia, 
@@ -364,7 +365,6 @@ print(incidencia)
 
 ```
 
-<<<<<<< Updated upstream
 =======
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 casos_2023 <- REG_Vih_df %>%
