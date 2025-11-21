@@ -28,16 +28,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## **Introducción**
 
-El **VIH** significa virus de inmunodeficiencia humana. Daña su sistema inmunitario al destruir un tipo de glóbulo blanco que ayuda a su cuerpo a combatir las infecciones. Esto lo pone en riesgo de tener otras infecciones y enfermedades.
+El **VIH** hace referencia a  virus de inmunodeficiencia humana. Daña el sistema inmunitario del individuo al destruir un tipo de glóbulo blanco que ayuda a su cuerpo a combatir las infecciones. Esto lo pone en riesgo de tener otras infecciones y enfermedades.
 
 Esta enfermedad afecta a un gran porcentaje de la población española, resultando en un foco de malestar. En este seminario estudiaremos aquellos indicativos que potencian la expresión de dicha enfermedad. 
 
-Nuestro primer foco de interés es estudiar la correlación entre la orientación sexual y el VIH, pero también incluiremos otros factores de riesgo que podrían desencadenar el virus.
+Nuestro primer foco de interés es estudiar la correlación entre la orientación sexual y el VIH, pero también incluiremos otros factores de riesgo que podrían desencadenar dicho virus.
 
 
 ## **Objetivo general**
 
-Conocer mediante el estudio de tablas la correlación que puede llegar a existir entre entre la orientación sexual de un individuo y su predisposición a contraer la enfermedad del VIH.
+- Concienciar a la población española de los diferentes desencadenantes que pueden llevar a contraer el VIH, ya que la mayoría son evitables.
+
+- Conocer mediante el estudio de tablas la correlación que puede llegar a existir entre entre la orientación sexual de un individuo y su predisposición a contraer la enfermedad del VIH.
 
 
 ## **Objetivos específicos**
@@ -51,7 +53,7 @@ Conocer mediante el estudio de tablas la correlación que puede llegar a existir
 ## **Metodología**
 
 Para realizar nuestro estudio, importamos las tablas que tenemos guardadas en la carpeta DATA de nuestro repositorio.
-
+También necesitaremos una serie de paquetes de R Cran para llevar a cabo el estudio, ejecutamos la siguiente caja de código para ello.
 ```{r , eval = TRUE,message=FALSE, warning=FALSE}
 # Datos importacion
 
@@ -68,11 +70,9 @@ library(readODS) #hay que descargarse el paquete readODS
 
 tabla_csv_orientacion <- read_csv("Input/DATA/VIH_orientaciónSexual.csv") 
 
-#head(tabla_csv_orientacion)
-names(tabla_csv_orientacion)
-
 ```
-### **Importación datos en ods:**
+### **Importación datos en ODS:**
+
 ```{r, eval = TRUE,message=FALSE, warning = FALSE}
 Modotransmisioncompleto <- read_ods("Input/DATA/Modotranscompleto.ods")
 ModotransmisionVIH <- read_ods("Input/DATA/modotransmisionVIH.ods")
@@ -121,6 +121,8 @@ datatable(tabla_unida, options = list(pageLength = 10, scrollX = TRUE))
 ### **Comparación casos VIH/conducta**
 
 Esta tabla reúne aquellos casos de VIH provocados por conductas sexuales. El foco principal son los hombres, por lo que aquí son nuestro sujeto de estudio.
+Se espera visualizar un conteo de hombres que presenten VIH en base a su preferencia sexual para reflejar el impacto que tiene sobre la población masculina.
+Cabe destacar que aquelos hombres en el estudio que marcaron la opción de "Bisexual" formaron parte del grupo "HSH".
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -173,7 +175,7 @@ ggplot(data = prevalencia_por_conducta,
 
 
 
-Aquí tenemos una comparación de aquellos que mantienen relaciones sexuales siempre con preservativo y los que no. Aquellos que mantienen relaciones homosexuales no suelen usar preservativos con la misma frecuencia que aquellos hombres que mantienen relaciones heterosexuales.
+Aquí tenemos una comparación de aquellos que mantienen relaciones sexuales siempre con preservativo, y los que no. Aquellos que mantienen relaciones homosexuales no suelen usar preservativos con la misma frecuencia que aquellos hombres que mantienen relaciones heterosexuales.
 Esto puede ser debido a que no existe riesgo de embarazo. Por ello, es muy importante enfatizar en la población española sobre la importancia de preservativo, más allá del deseo de no concebir:
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
@@ -221,11 +223,12 @@ ggplot(data = uso_preservativo, aes(x=`Hábito sexual`, y = `Porcentaje (%)`, co
 ```
 
 
-Aquí empleamos una tabla anterior para estudiar si el número de parejas afecta en el desarrollo del VIH. Cabe destacar que aquí se han incluido tanto como hombre como podemos presenciar en la tabla para enfatizar la correlación que existe entre ser hombre y padecer esta enfermedad:
+Aquí empleamos una tabla anterior para estudiar si el número de parejas afecta en el desarrollo del VIH. Cabe destacar que aquí se han incluido tanto como hombres como mujeres.
+Podemos presenciar en la tabla la correlación que existe entre ser hombre y padecer esta enfermedad. Por otra parte es cierto que los hombres en el estudio tendían a tener un número de aprejas mayor mientras que las mujeres no, eso afecta a la ceteza de estos datos.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
-tabla_unida$edad <- as.numeric(tabla_unida$edad) 
+tabla_unida$edad <- as.numeric(tabla_unida$edad) #Nos aseguramos de que edad es numerico.
 
 riesgo_sifilis <- tabla_unida %>%
 
