@@ -187,7 +187,7 @@ prevalencia_por_conducta <- tabla_csv_orientacion %>%
 datatable(prevalencia_por_conducta, 
           caption = "Tasa de Prevalencia de VIH por Hábito Sexual")
 
-print(prevalencia_por_conducta)
+
 ```
 
 
@@ -345,12 +345,13 @@ ggplot(data = dispersion,
     color = "Estado Clínico"
   ) +
   
-  scale_color_manual(values = c("Asintom" = "blue", "SIDA" = "red")) +
-  theme_minimal(base_size = 14) +
-  theme(legend.position = "bottom")
+  scale_color_manual(values = c("Asintom" = "blue", "SIDA" = "red")) 
+  
 
 
 ```
+
+
 Esta tabla estudia por comunidad autónoma, y basándonos en el grupo de edad, el porcentaje existente de los distintos factores de riesgo incluidos en el estudio que puede desencadenar el virus.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
@@ -361,7 +362,7 @@ tabla_relacion_infeccion <- motivosVIH %>%
   mutate(Porcentaje_CCAA = (Total_Casos / sum(Total_Casos)) * 100) %>%
   ungroup()
 
-print(tabla_relacion_infeccion)
+
 
 ```
 
@@ -399,6 +400,7 @@ ggplot(tabla_para_grafico,
     color = "Motivo de Infección" 
   )
 ```
+
 Este box-plot nos permite visualizar los diferentes motivos que desencadenan la enfermedad según su rango de edad, ya que hemos notado en la gráfica anterior cómo hay ciertas tendencias respecto a los factores de riesgo dependiendo de la edad.
 
 
@@ -431,7 +433,6 @@ incidencia <- tabla_completa %>%
 datatable(incidencia, 
           caption = "Número de casos por conducta sexual")
 
-print(incidencia)
 
 
 ```
@@ -488,6 +489,8 @@ ggplot(data = casos_por_provincia_conteo,
   
 
 ```
+
+
 Visualización de la evolución del impacto de la enfermedad en la población desde 2013 a 2023
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
@@ -517,6 +520,9 @@ tendencia
 
 
 ```
+
+
+
 Correlacion si la caida o subida de casos esta influenciada por el grupo de riesgo. Con esto queremos ver si la variación en los nieveles de los factores de riesgo a lo largo de los años tendría impacto sobre el desarrollo de la enfermedad. Podemos ver una clara correlación entre ambas gráficas.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
@@ -573,47 +579,6 @@ tendencia_parejas
 Estudiamos la posible correlación de la caida o subida de casos ylas variaciones en los factores de riesgo.
 Hemos creado una tabla más simple a partir de nuestra base de datos que tenía una tabla compuesta. De esta manera su representación resulta más sencilla de manejar y entendible en el gráfico.
 
-```{r, eval = TRUE,message=FALSE, warning=FALSE}
-Modotransmisioncompleto_limpio <- Modotransmisioncompleto %>%
-  rename(
-    `HSH` = `Modo de transmisión`,
-    
-    `Heterosexual_H`= `...3`,
-    
-    `Heterosexual_M`= `...4`,
-  
-    `PID_H` = `...5`,
-    `PID_M` = `...6`,
-    `Materno_Infantil_H` = `...7`,
-    `Materno_Infantil_M` = `...8`,
-    `Hemoderivados_H` = `...9`,
-    `Hemoderivados_M` = `...10`,
-    `Transfusión_H`= `...11`,
-    `Transfusión_M`= `...12`,
-    `Desconocido_H`= `...13`,
-    `Desconocido_M`= `...14`,
-   
-  ) %>%
-  select(
-    `Año de diagnóstico`, 
-    `HSH`,
-    `Heterosexual_H`, 
-    `Heterosexual_M`,
-    `PID_H`, 
-    `PID_M`,
-    `Materno_Infantil_H`, 
-    `Materno_Infantil_M`, 
-    `Hemoderivados_H`,
-    `Hemoderivados_M`,
-    `Transfusión_H`,
-    `Transfusión_M`,
-    `Desconocido_H`,
-    `Desconocido_M`,
-    `Total`
-    
-)
-
-```
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -677,85 +642,60 @@ datatable(correlacion_tendencia_motivo,
 
 ```
 
-
+Como podemos ver en la siguiente gráfica se reafirma nuestro objetivo principal, mostrando como el motivo HSH denota una promitente superioridad en numero de nuevos casos que el resto. Por otra parte, podemos ver que a medida que pasan los años la incidencia del VIH se ha visto reducida debido a las campañas de concienciacion que tratan de prevenir dicho virus en la población
 
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
-library(ggplot2)
-
-# Definición manual de los colores. Se mantienen los nombres de la leyenda.
 motivos_colores <- c(
-    "Total Casos Nuevos" = "black",
-    "HSH" = "#E41A1C",           
-    "Heterosexual" = "#377EB8",   
-    "Uso de Drogas IV (PID)" = "#4DAF4A", 
-    "Materno-Infantil" = "#984EA3", 
-    "Hemoderivados" = "#FF7F00",  
-    "Transfusión" = "#FFFF33",    
-    "Desconocido" = "#A65628"     
+    "HSH" = "red",           
+    "Heterosexual" = "blue",   
+    "Uso de Drogas IV (PID)" = "green", 
+    "Materno-Infantil" = "black", 
+    "Hemoderivados" = "orange",  
+    "Transfusión" = "deeppink",    
+    "Desconocido" = "pink"     
 )
+
+correlacion_tendencia_motivo <- correlacion_tendencia_motivo %>%
+    mutate(`Año` = as.numeric(`Año`))
 
 tendencia_motivos <- ggplot(data = correlacion_tendencia_motivo, aes(x = `Año`)) + 
   
-  # --- Capas para los Motivos Individuales (más transparentes) ---
-  
-  # Mantenemos las líneas y puntos para cada motivo
-  # Usamos alpha=0.6 para que no opaquen la línea total.
-  geom_line(aes(y = HSH, color = "HSH"), linewidth = 1, alpha = 0.6) +
+  geom_smooth(aes(y = HSH, color = "HSH"),method = "lm", se = FALSE,linewidth = 1, alpha = 0.6) +
   geom_point(aes(y = HSH, color = "HSH"), size = 2, alpha = 0.6) +
   
-  geom_line(aes(y = Heterosexual_H, color = "Heterosexual"), linewidth = 1, alpha = 0.6) +
+  geom_smooth(aes(y = Heterosexual_H, color = "Heterosexual"),method = "lm",  se = FALSE,linewidth = 1, alpha = 0.6) +
   geom_point(aes(y = Heterosexual_H, color = "Heterosexual"), size = 2, alpha = 0.6) +
   
-  geom_line(aes(y = PID_H, color = "Uso de Drogas IV (PID)"), linewidth = 1, alpha = 0.6) +
+  geom_smooth(aes(y = PID_H, color = "Uso de Drogas IV (PID)"),method = "lm", se = FALSE,linewidth = 1, alpha = 0.6) +
   geom_point(aes(y = PID_H, color = "Uso de Drogas IV (PID)"), size = 2, alpha = 0.6) +
   
-  geom_line(aes(y = Hemoderivados_H, color = "Hemoderivados"), linewidth = 1, alpha = 0.6) +
+  geom_smooth(aes(y = Hemoderivados_H, color = "Hemoderivados"),method = "lm", se = FALSE, linewidth = 1, alpha = 0.6) +
   geom_point(aes(y = Hemoderivados_H, color = "Hemoderivados"), size = 2, alpha = 0.6) +
   
-  geom_line(aes(y = Transfusion_H, color = "Transfusión"), linewidth = 1, alpha = 0.6) +
+  geom_smooth(aes(y = Transfusion_H, color = "Transfusión"),method = "lm", se = FALSE, linewidth = 1, alpha = 0.6) +
   geom_point(aes(y = Transfusion_H, color = "Transfusión"), size = 2, alpha = 0.6) +
   
-  geom_line(aes(y = Desconocido_H, color = "Desconocido"), linewidth = 1, alpha = 0.6) +
+  geom_smooth(aes(y = Desconocido_H, color = "Desconocido"),method = "lm", se = FALSE, linewidth = 1, alpha = 0.6) +
   geom_point(aes(y = Desconocido_H, color = "Desconocido"), size = 2, alpha = 0.6) +
 
-  geom_line(aes(y = Materno_Infantil_H, color = "Materno-Infantil"), linewidth = 1, alpha = 0.6) +
+  geom_smooth(aes(y = Materno_Infantil_H, color = "Materno-Infantil"),method = "lm", se = FALSE, linewidth = 1, alpha = 0.6) +
   geom_point(aes(y = Materno_Infantil_H, color = "Materno-Infantil"), size = 2, alpha = 0.6) +
   
-  # --- Capa para el Total de Casos Nuevos (la línea de referencia) ---
-  
-  # Usamos un linewidth más grande y alpha=1.0 para que destaque.
-  geom_line(aes(y = Casos_Nuevos, color = "Total Casos Nuevos"), linewidth = 2, alpha = 1.0) +
-  geom_point(aes(y = Casos_Nuevos, color = "Total Casos Nuevos"), size = 2, alpha = 1.0) +
-  
-  # Aplicar la leyenda y los colores definidos manualmente
   scale_color_manual(
-    name = "Motivo de Transmisión", 
-    values = motivos_colores,
-    breaks = names(motivos_colores),
-    guide = guide_legend(
-      override.aes = list(
-        # Ajustamos el tamaño de los íconos de la leyenda para reflejar el contraste
-        linetype = c(1, rep(1, length(motivos_colores) - 1)), # Todas son líneas
-        linewidth = c(2, rep(1, length(motivos_colores) - 1)), # La primera (Total) es más gruesa
-        shape = c(16, rep(16, length(motivos_colores) - 1)),   # Todos son puntos
-        size = c(4, rep(2, length(motivos_colores) - 1)), # El punto del Total es más grande
-        alpha = c(1.0, rep(0.8, length(motivos_colores) - 1)) # Transparencia
-      )
-    )
+    name = "Motivo de Transmisión",
+    values = motivos_colores
   ) +
   
-  # Texto solo para el total de Casos Nuevos (se mantiene visible)
   geom_text(data = correlacion_tendencia_motivo,
             aes(label = Casos_Nuevos, y = Casos_Nuevos),
-            vjust = -1.7, size = 3.5, color = "black", show.legend = FALSE) +
+            vjust = -1.7, size = 3.5, color = "black") +
   
   labs(
-    title = "Evolución Anual de Nuevas Infecciones por VIH (2013-2023)",
+    title = "Evolución anual de motivos desencadenantes del VIH (2013-2023)",
     x = "Año de Diagnóstico",
-    y = "Número de Nuevos Casos Registrados"
-  ) +
-  theme_minimal()
+    y = "Número de Casos Registrados"
+  ) 
 
 tendencia_motivos
 ```

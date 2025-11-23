@@ -191,7 +191,7 @@ ui <- fluidPage(
                       sidebarLayout(
                         sidebarPanel(
                           sliderInput("top_n_prov", "Mostrar Top N provincias con más casos:",
-                                      min = 5, max = 50, value = 15)
+                                      min = 3, max = 9, value = 15)
                         ),
                         mainPanel(
                           plotOutput("plot_provincias", height = "600px")
