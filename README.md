@@ -20,10 +20,11 @@ Nuestro primer foco de interés es estudiar la correlación entre la orientació
 
 ## Objetivos específicos
 1. ¿Cuál es la comunidad autónoma con más casos de VIH en 2023 por conducta homosexual? ¿Y heterosexual?
-2. ¿Cuál es el motivo más común por el que se produce la enfermedad en dicha comunidad autónoma?
-3. ¿Qué porcentaje de hombres tiene la enfermedad con menos de 40 años en la provincia de Burgos?
+2. ¿Cuál es el motivo más común por el que se produce la enfermedad?
+3. ¿Qué porcentaje de hombres tiene la enfermedad con menos de 40 años?
 4. ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2013 a 2023?
 5. ¿Hay más casos de VIH cuanto mayor es la población?
+6. ¿Cuál es la relación entre padecer la enfermedad y los factores de riesgo?
 
 ## Metodología y resultados
 Para conocer la respuesta de nuestros objetivos generales y específicos, hemos realizado varias tablas y gráficos de distintos tipos a lo largo del documento. De esta manera, cada tabla y gráfico explican cada una de las preguntas que nos hemos hecho durante el proyecto. Así, hemos llegado a los siguientes resultados:
