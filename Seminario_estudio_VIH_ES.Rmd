@@ -35,7 +35,7 @@ Esta enfermedad afecta a un gran porcentaje de la población española, resultan
 Nuestro primer foco de interés es estudiar la correlación entre la orientación sexual y el VIH, pero también incluiremos otros factores de riesgo que podrían desencadenar dicho virus.
 
 
-## **Objetivo general**
+## **Objetivos generales**
 
 - Concienciar a la población española de los diferentes desencadenantes que pueden llevar a contraer el VIH, ya que en su mayoría son evitables.
 
@@ -45,10 +45,11 @@ Nuestro primer foco de interés es estudiar la correlación entre la orientació
 ## **Objetivos específicos**
 
 1. ¿Cuál es la comunidad autónoma con más casos de VIH en 2023 por conducta homosexual? ¿Y heterosexual?
-2. ¿Cuál es el motivo más común por el que se produce la enfermedad en dicha comunidad autónoma?
-3. ¿Qué porcentaje de hombres tiene la enfermedad con menos de 40 años en la provincia de Burgos?
+2. ¿Cuál es el motivo más común por el que se produce la enfermedad?
+3. ¿Qué porcentaje de hombres tiene la enfermedad con menos de 40 años?
 4. ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2013 a 2023?
 5. ¿Hay más casos de VIH cuanto mayor es la población?
+6. ¿Cuál es la relación entre padecer la enfermedad y los factores de riesgo?
 
 ## **Metodología**
 
@@ -112,7 +113,7 @@ datatable(tabla_unida, options = list(pageLength = 10))
 
 Esta tabla reúne aquellos casos de VIH provocados por conductas sexuales. El foco principal son los hombres, por lo que aquí son nuestro sujeto de estudio.
 Se espera visualizar un conteo de hombres que presenten VIH en base a su preferencia sexual para reflejar el impacto que tiene sobre la población masculina.
-Cabe destacar que aquelos hombres en el estudio que marcaron la opción de "Bisexual" formaron parte del grupo "HSH".
+Cabe destacar que aquellos hombres en el estudio que marcaron la opción de "Bisexual" formaron parte del grupo "HSH".
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -137,7 +138,7 @@ print(prevalencia_por_conducta)
 
 
 
-Aquí tenemos el gráfico para la prevalencia 
+Aquí tenemos el gráfico para la prevalencia: 
 
 
 ```{r , eval = TRUE, message=FALSE, warning=FALSE}
@@ -212,7 +213,7 @@ ggplot(data = uso_preservativo, aes(x=`Hábito sexual`, y = `Porcentaje (%)`, co
 
 Aquí empleamos una tabla anterior para estudiar si el número de parejas afecta en el desarrollo del VIH. Cabe destacar que aquí se han incluido tanto como hombres como mujeres.
 
-Podemos presenciar en la tabla la correlación que existe entre ser hombre y padecer esta enfermedad. Por otra parte es cierto que los hombres en el estudio tendían a tener un número de aprejas mayor mientras que las mujeres no, eso afecta a la ceteza de estos datos.
+Podemos presenciar en la tabla la correlación que existe entre ser hombre y padecer esta enfermedad. Por otra parte, es cierto que los hombres en el estudio tendían a tener un número de parejas mayor que las mujeres, por lo que eso afecta a la certeza de estos datos.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -475,7 +476,7 @@ tendencia_parejas
 ```
 
 
-Correlacion si la caida o subida de casos esta acompañado por un cambio en los factores de riesgo
+Correlación si la caída o subida de casos está acompañado por un cambio en los factores de riesgo.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 Modotransmisioncompleto_limpio <- Modotransmisioncompleto %>%
@@ -738,13 +739,17 @@ p
 
 
 ```
-análisis de Casos por Sexo con el análisis de Casos por Grupo de Riesgo a lo largo del tiempo.
+Análisis de Casos por Sexo con el análisis de Casos por Grupo de Riesgo a lo largo del tiempo.
 
 
 ## **Resultados**
-Claramente, podemos observar en la primera tabla que los hombres homosexuales tienen más predisposición a contraer la enfermedad, que los hombres heterosexuales.
+Claramente, podemos observar en varias tablas y gráficos que los hombres homosexuales tienen más predisposición a contraer la enfermedad, que los hombres heterosexuales.
 
-Además, la cuarta tabla muestra que hay más hombres homosexuales que sufren la enfermedad de los que, aunque la muestren, son asintomáticos.
+También, mostramos los motivos por los que se puede contraer el VIH y la frecuencia de cada uno de ellos.
+
+Además, se muestra que hay más hombres homosexuales que sufren la enfermedad de los que, aunque la muestren, son asintomáticos.
+
+Por último, hemos representado la evolución del VIH en España entre los años 2013 y 2023.
 
 ## **Conclusiones generales**
 
@@ -767,9 +772,9 @@ __Aquí están las herramientes empleadas para saber realizar el código de Shin
 - __Temario de ampliación sobre como usar shiny__ : 
   Custom Bootstrap Sass Themes for shiny and rmarkdown. (s. f.). https://rstudio.github.io/bslib/
 
-  Apply a function to each element of a vector — map. (s. f.).           https://purrr.tidyverse.org/reference/map.html
+- Apply a function to each element of a vector — map. (s. f.).           https://purrr.tidyverse.org/reference/map.html
 
-  Ryan, Y. (2022, 19 octubre). Creación de aplicaciones web interactivas con R y Shiny. Programming Historian. https://programminghistorian.org/es/lecciones/creacion-de-aplicacion-shiny
+- Ryan, Y. (2022, 19 octubre). Creación de aplicaciones web interactivas con R y Shiny. Programming Historian. https://programminghistorian.org/es/lecciones/creacion-de-aplicacion-shiny
 Strayer, N. (s. f.). Shiny. Shiny. https://shiny.posit.co/r/articles/build/css/
 
 
