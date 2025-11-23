@@ -12,7 +12,7 @@ Esta enfermedad afecta a un gran porcentaje de la población española, resultan
 Nuestro primer foco de interés es estudiar la correlación entre la orientación sexual y el VIH, pero también incluiremos otros factores de riesgo que podrían desencadenar el virus.
 
 
-## Objetivo general
+## Objetivos generales
 - Concienciar a la población española de los diferentes desencadenantes que pueden llevar a contraer el VIH, ya que en su mayoría son evitables.
 
 - Conocer mediante el estudio de tablas la correlación que puede llegar a existir entre entre la orientación sexual de un individuo y su predisposición a contraer la enfermedad del VIH.
