@@ -86,7 +86,7 @@ tabla_csv_orientacion <- read_csv("Input/DATA/VIH_orientaciónSexual.csv")
 ### **Importación datos en ODS:**
 
 ```{r, eval = TRUE,message=FALSE, warning = FALSE}
-Modotransmisioncompleto <- read_ods(path = "Input/DATA/Modotranscompleto.ods") #, sheet = 1, col_names = TRUE,skip = 1)
+Modotransmisioncompleto <- read_ods(path = "Input/DATA/Modotranscompleto.ods") 
 ModotransmisionVIH <- read_ods("Input/DATA/modotransmisionVIH.ods")
 motivosVIH <- read_ods("Input/DATA/motivosVIH.ods")
 yearSexoVIH <- read_ods("Input/DATA/yearSexoVIH.ods")
@@ -149,8 +149,6 @@ REG_Vih <- fromJSON(file = "Input/DATA/registro-nuevas-infecciones-por-vih.json"
 # Extraer la lista 'fields' de cada registro
 REG_Vih_df <- map_dfr(REG_Vih, ~ .x$fields)
 
-# Mostrar primeras filas en tabla interactiva
-#str(REG_Vih_df)   
 names(REG_Vih_df)
 REG_Vih_df
 
@@ -486,7 +484,6 @@ ggplot(data = casos_por_provincia_conteo,
     x = "Total de Casos de VIH Registrados",
     y = "Provincia de Residencia"
   )
-  
 
 ```
 
@@ -701,6 +698,221 @@ tendencia_motivos
 ```
 
 
+### **Interfaz de usuario de Shiny** 
+```{r, eval = FALSE}
+ui <- fluidPage(
+  theme = bs_theme(
+    version = 5,
+    bg = "#FFF0F5",       
+    fg = "#333333",       
+    primary = "#D81B60",
+    base_font = font_google("Poppins")
+    
+  ),
+  
+  
+  titlePanel("Visualización del estudio VIH y los factores de Riesgo"),
+  
+  tags$head(
+    tags$style(HTML("
+      .img-galeria {
+        border-radius: 15px;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.5s;
+        width: 100%;
+        height: 250px; /* Un poco más altas para que luzcan bien */
+        object-fit: cover;
+        margin-bottom: 15px;
+        border: 3px solid #D81B60; /* Borde rosa elegante */
+      }
+      .img-galeria:hover {
+        transform: scale(1.03);
+        box-shadow: 0 10px 20px 0 rgba(0,0,0,0.3);
+      }
+      .titulo-seminario {
+        text-align: center; color: #D81B60; font-weight: 800; margin-top: 40px; margin-bottom: 10px;
+      }
+      .subtitulo {
+        text-align: center; color: #555; margin-bottom: 40px; font-size: 18px;
+      }
+      .texto-imagen {
+        text-align: center; font-weight: bold; color: #D81B60; font-size: 16px;
+      }
+    "))
+  ),
+  
+  navbarPage("Seminario A",
+             
+             tabPanel("Inicio", icon = icon("cat"),
+                      
+                      div(class = "titulo-seminario",
+                          h1("Análisis del Impacto del VIH y Factores de Riesgo")
+                      ),
+                      div(class = "subtitulo",
+                          p("Seminario de Investigación 2025 -  Estudio  sobre la evolución y prevención en el VIH.")
+                      ),
+                      
+                      
+                      layout_column_wrap(
+                        width = 1/3, 
+                        
+                        
+                        div(
+                          img(src = "corazon.jpg", class = "img-galeria"), 
+                          div(class = "texto-imagen", "Crónico")
+                        ),
+                        
+                        div(
+                          img(src = "perfecto.png", class = "img-galeria"),
+                          div(class = "texto-imagen", "Prevenible")
+                        ),
+                        
+                        div(
+                          img(src = "preservativo.jpg", class = "img-galeria"),
+                          div(class = "texto-imagen", "Controlable")
+                        )
+                      ),
+                      
+                      hr(),
+                      
+                      div(style="text-align: center; color: #777; margin-top: 30px; margin-bottom: 20px;",
+                          p(em("Autoras: Amina Khantimirova, Wiam Messari y Emma Arrieta"))
+                      )
+             ),
+             
+             
+             tabPanel("Evolución Temporal",
+                      sidebarLayout(
+                        sidebarPanel(
+                          sliderInput("rango_anos", "Selecciona rango de años:",
+                                      min = 2013, max = 2023, value = c(2013, 2023), sep = "")
+                        ),
+                        mainPanel(
+                          plotOutput("plot_evolucion"),
+                          h4("Datos detallados por año"),
+                          dataTableOutput("tabla_evolucion")
+                        )
+                      )
+             ),
+             
+             
+             tabPanel("Conducta Sexual",
+                      fluidRow(
+                        column(6, 
+                               h3("Prevalencia por Hábito Sexual"),
+                               plotOutput("plot_prevalencia")
+                        ),
+                        column(6,
+                               h3("Uso de Preservativo"),
+                               helpText("Comparativa del uso 'Siempre' vs otros"),
+                               plotOutput("plot_preservativos")
+                        )
+                      ),
+                      hr(), #
+                      fluidRow(
+                        column(12,
+                               h4("Tabla de Prevalencia"),
+                               dataTableOutput("dt_prevalencia")
+                        )
+                      )
+             ),
+             
+             tabPanel("Correlaciones y Riesgo",
+                      sidebarLayout(
+                        sidebarPanel(
+                          h4("Filtros de Regresión"),
+                          checkboxGroupInput("estados_clinicos", "Seleccionar Estado Clínico:",
+                                             choices = c("Asintom", "SIDA"),
+                                             selected = c("Asintom", "SIDA")),
+                          
+                        ),
+                        mainPanel(
+                          plotOutput("plot_regresion_parejas"),
+                          p("Nota: Este gráfico muestra la relación entre la edad y el número de parejas en el último año.")
+                        )
+                      )
+             ),
+             
+             tabPanel("Análisis por Provincia",
+                      sidebarLayout(
+                        sidebarPanel(
+                          sliderInput("top_n_prov", "Mostrar Top N provincias con más casos:",
+                                      min = 3, max = 9, value = 15)
+                        ),
+                        mainPanel(
+                          plotOutput("plot_provincias", height = "600px")
+                        )
+                      )
+             ),
+             tabPanel("Edad y grupo de riesgo",
+                      h3("Análisis de Grupo de Riesgo (Sífilis)"),
+                      p("Visualización de casos según estado de sífilis."),
+                      plotOutput("grupo_de_riesgo_edad")
+             ),
+             tabPanel("Distribución de los Factores de riesgo",
+                      sidebarLayout(
+                        sidebarPanel(
+                          h4("Filtros"),
+                          
+                          checkboxGroupInput("filtro_motivos", 
+                                             "Selecciona los factores de riesgo:",
+                                             choices = unique(tabla_para_grafico$Motivo),
+                                             selected = unique(tabla_para_grafico$Motivo)
+                          ),
+                        ),
+                        
+                        mainPanel(
+                          plotOutput("correlacion40", height = "800px")
+                        )
+                      )
+             ),
+             tabPanel("Parejas Sexuales y VIH",
+                      sidebarLayout(
+                        sidebarPanel(
+                          h4("Filtros de Población"),
+                          
+                          
+                          sliderInput("filtro_ano_parejas", 
+                                      "Selecciona el periodo:",
+                                      min = 2013, max = 2023, 
+                                      value = c(2013, 2023), 
+                                      sep = ""), 
+                          
+                          checkboxGroupInput("filtro_estado_vih",
+                                             "Estado Serológico:",
+                                             choices = unique(tabla_unida$VIH[!is.na(tabla_unida$VIH)]), 
+                                             selected = unique(tabla_unida$VIH[!is.na(tabla_unida$VIH)])
+                          ),
+                        ),
+                        
+                        mainPanel(
+                          plotOutput("plot_tendencia_parejas", height = "600px")
+                        )
+                      )
+             ),
+             tabPanel("Nuevos Casos VIH",
+                      sidebarLayout(
+                        sidebarPanel(
+                          sliderInput("rango_anos_nuevos", "Selecciona rango de años:", 
+                                      min = 2013, max = 2023, value = c(2013, 2023), sep = "")
+                        ),
+                        mainPanel(
+                          plotOutput("plot_nuevosCasosn"),
+                          h4("Datos detallados por año"),
+                          dataTableOutput("tabla_nueva")
+                        )
+                      )
+             ),
+             tabPanel("Nuevos casos según grupos de riesgo",
+                      h3("Evolución Anual de Nuevos Casos por Grupo de Riesgo"),
+                      p("Tendencia de los casos registrados como VIH Positivo según el grupo de riesgo."),
+                      plotOutput("plot_casos_por_grupo_riesgo", height = "450px") 
+             )
+  )
+)
+```
+
+
 
 ## **Resultados**
 A medida que desarrollábamos el seminario fuimos recogiendo y mencionando pequeñas conclusiones a las que llegábamos.
@@ -746,6 +958,3 @@ __Aquí están las herramientes empleadas para saber realizar el código de Shin
 
   Ryan, Y. (2022, 19 octubre). Creación de aplicaciones web interactivas con R y Shiny. Programming Historian. https://programminghistorian.org/es/lecciones/creacion-de-aplicacion-shiny
 Strayer, N. (s. f.). Shiny. Shiny. https://shiny.posit.co/r/articles/build/css/
-
-
-
