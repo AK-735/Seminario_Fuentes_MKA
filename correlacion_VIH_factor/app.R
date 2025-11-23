@@ -35,10 +35,21 @@ library(bslib) # Hace que se vea mejor, permite una UI moderna
 REG_Vih_df$ano_num <- as.numeric(REG_Vih_df$ano)
 REG_Vih_df$edad <- as.numeric(REG_Vih_df$edad)
 
-# Creación tabla unida
+# Creación tabla unida y otras tablas necesarias
 tabla_unida <- left_join(REG_Vih_df, tabla_csv_orientacion, by = c("edad" = "Edad", "sexo" = "Sexo"), `relationship = "many to many"`)
 tabla_unida$edad <- as.numeric(tabla_unida$edad)
 tabla_unida$`Parejas ultimo año` <- as.numeric(tabla_unida$`Parejas ultimo año`)
+
+tabla_para_grafico <- motivosVIH %>%
+  filter(Motivo != "Total") %>% 
+  filter(Edad != "Total") %>%   
+  filter(`Comunidades y Ciudades Autónomas` != "Total Nacional")%>%
+  mutate(
+    Edad = recode(Edad,
+                  "Menos de 40 años" = "<40 Años",
+                  "40 y más años"    = ">=40 Años"
+    )
+  )
 
 
 
@@ -186,6 +197,59 @@ ui <- fluidPage(
                           plotOutput("plot_provincias", height = "600px")
                         )
                       )
+             ),
+             tabPanel("Edad y grupo de riesgo",
+                      h3("Análisis de Grupo de Riesgo (Sífilis)"),
+                      p("Visualización de casos según estado de sífilis."),
+                      plotOutput("grupo_de_riesgo_edad")
+                      ),
+             tabPanel("Distribución de los Factores de riesgo",
+                      sidebarLayout(
+                        sidebarPanel(
+                          h4("Filtros"),
+                          
+                          checkboxGroupInput("filtro_motivos", 
+                                             "Selecciona los factores de riesgo:",
+                                      
+                                             choices = unique(tabla_para_grafico$Motivo), 
+                                             
+                                             selected = unique(tabla_para_grafico$Motivo)
+                          ),
+                          helpText("Desmarca las casillas para ocultar ciertos grupos del gráfico.")
+                        ),
+                        
+                        mainPanel(
+                          plotOutput("correlacion40", height = "800px")
+                        )
+                      )
+             ),
+             tabPanel("Parejas Sexuales y VIH",
+                      sidebarLayout(
+                        sidebarPanel(
+                          h4("Filtros de Población"),
+                          
+                          # Filtro de Años (Slider)
+                          sliderInput("filtro_ano_parejas", 
+                                      "Selecciona el periodo:",
+                                      min = 2013, max = 2023, 
+                                      value = c(2013, 2023), 
+                                      sep = ""), # sep="" quita la coma de los miles (2,013 -> 2013)
+                          
+                          # Filtro de Estado VIH (Checkbox)
+                          checkboxGroupInput("filtro_estado_vih",
+                                             "Estado Serológico:",
+                                             choices = unique(tabla_unida$VIH[!is.na(tabla_unida$VIH)]), # Evitamos NA en las opciones
+                                             selected = unique(tabla_unida$VIH[!is.na(tabla_unida$VIH)])
+                          ),
+                          
+                          helpText("Nota: El tamaño de la burbuja representa la cantidad de personas que coinciden en ese año y número de parejas.")
+                        ),
+                        
+                        mainPanel(
+                          # Le damos buena altura para ver los detalles
+                          plotOutput("plot_tendencia_parejas", height = "600px")
+                        )
+                      )
              )
   )
 )
@@ -225,6 +289,37 @@ server <- function(input, output) {
       ) %>%
       mutate(`Tasa de Prevalencia (%)` = round((VIH_Positivo / Casos) * 100, 2))
   })
+  output$grupo_de_riesgo_edad <- renderPlot({
+    ggplot(data = tabla_unida, aes(x= `edad`, y = `d_grupo_riesgo`, coulor = `d_grupo_riesgo`))+
+      geom_boxplot(size = 1.5)+
+      labs(
+        title = "Distribucion de la edad por grupo de riesgo",
+        x = "Edad",
+        y = "Grupo de Riesgo",
+      )
+  })
+  
+  output$correlacion40 <- renderPlot({
+    req(input$filtro_motivos) 
+    
+    datos_filtrados <- tabla_para_grafico %>%
+      filter(Motivo %in% input$filtro_motivos)
+    ggplot(datos_filtrados, 
+           aes(x = Total, 
+               y = `Comunidades y Ciudades Autónomas`, 
+               color = Motivo)) + 
+      
+      geom_point(size = 1.5, alpha = 0.8) +
+      facet_wrap(~Edad, scales = "free_x") + 
+      
+      labs(
+        title = "Distribución de Edad por CCAA",
+        x = "Cantidad",
+        y = "Comunidad Autónoma",
+        color = "Motivo de Infección" 
+      ) +
+      theme_minimal() 
+  })
   
   output$plot_prevalencia <- renderPlot({
     ggplot(data = data_prevalencia(), 
@@ -254,7 +349,7 @@ server <- function(input, output) {
   
   
   output$plot_regresion_parejas <- renderPlot({
-    req(input$estados_clinicos) # Esperar a que haya selección
+    req(input$estados_clinicos)
     
     data_dispersion <- tabla_unida %>%
       filter(estado_clinico %in% input$estados_clinicos) %>%
@@ -281,6 +376,48 @@ server <- function(input, output) {
       labs(title = paste("Top", input$top_n_prov, "Provincias con más casos"), 
            x = "Total Casos", y = "Provincia") +
       theme_minimal(base_size = 14)
+  })
+  
+  output$plot_tendencia_parejas <- renderPlot({
+    # 1. Validaciones para evitar errores
+    req(input$filtro_estado_vih)
+    
+    # 2. Preparación de datos (Reactiva dentro del render)
+    parejas_vih_filtrado <- tabla_unida %>%
+      # Filtramos por los inputs del usuario
+      filter(ano >= input$filtro_ano_parejas[1] & ano <= input$filtro_ano_parejas[2]) %>%
+      filter(VIH %in% input$filtro_estado_vih) %>%
+      filter(!is.na(VIH)) %>% # Quitamos NAs si quedan
+      
+      # --- PASO CLAVE: CONTAR ---
+      # Agrupamos y contamos para que el tamaño ("size") funcione
+      count(ano, VIH, `Parejas ultimo año`, name = "Cantidad_Personas")
+    
+    # 3. Gráfico
+    ggplot(data = parejas_vih_filtrado, 
+           aes(x = ano, 
+               y = `Parejas ultimo año`, 
+               color = VIH, 
+               size = Cantidad_Personas)) + # Ahora 'size' usa el conteo real
+      
+      geom_point(alpha = 0.7) +
+      
+      # Ajustamos la escala de tamaño para que las burbujas se vean bien
+      scale_size_continuous(range = c(2, 10)) + 
+      
+      labs(
+        title = "Frecuencia de Parejas Sexuales por Año y Estado de VIH",
+        subtitle = paste("Periodo:", input$filtro_ano_parejas[1], "-", input$filtro_ano_parejas[2]),
+        x = "Año de la Encuesta",          # Corregido (antes estaba cambiado)
+        y = "Parejas Sexuales (Último Año)", # Corregido
+        color = "Estado VIH",
+        size = "Nº Personas"
+      ) +
+      theme_minimal() +
+      theme(
+        axis.text.x = element_text(size = 12),
+        legend.position = "bottom"
+      )
   })
   
 }
