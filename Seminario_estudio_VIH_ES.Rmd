@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## **Introducción**
 
-El **VIH** hace referencia a  virus de inmunodeficiencia humana. Daña el sistema inmunitario del individuo al destruir un tipo de glóbulo blanco que ayuda a su cuerpo a combatir las infecciones. Esto lo pone en riesgo de tener otras infecciones y enfermedades.
+El **VIH** hace referencia al virus de la inmunodeficiencia humana. Daña el sistema inmunitario del individuo al destruir un tipo de glóbulo blanco que ayuda a su cuerpo a combatir las infecciones. Esto lo pone en riesgo de tener otras infecciones y enfermedades.
 
 Esta enfermedad afecta a un gran porcentaje de la población española, resultando en un foco de malestar. En este seminario estudiaremos aquellos indicativos que potencian la expresión de dicha enfermedad. 
 
@@ -44,13 +44,25 @@ Nuestro primer foco de interés es estudiar la correlación entre la orientació
 
 ## **Objetivos específicos**
 
-1. ¿Cuál es la comunidad autónoma con más casos de VIH en 2023 por conducta homosexual? ¿Y heterosexual?
-2. ¿Cuál es el motivo más común por el que se produce la enfermedad en dicha comunidad autónoma?
-3. ¿Qué porcentaje de hombres tiene la enfermedad con menos de 40 años en la provincia de Burgos?
+1. ¿La conducta sexual resulta un factor de riesgo para el VIH?
+2. ¿Cuál es la comunidad autónoma con más casos de VIH en 2023 por conducta homosexual? ¿Y heterosexual?
+2. Relación existente entre el uso de preservativo y el desarrollo del VIH.
+3. Relación existente entre el promedio de parejas y el desarrollo del VIH.
 4. ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2013 a 2023?
 5. ¿Hay más casos de VIH cuanto mayor es la población?
+6. Estudio anual de nuesvas infecciones.
+7. Factores de riego generales y su influencia en el desarrollo del VIH.
 
 ## **Metodología**
+Para este seminario empleamos una mezcla de distintos tipos de datos, parte de ellos fueros obtenidos de bases de datos provenientes del gobierno de Castilla y Leon 
+mientra que la inmensa mayoría fueron sacadas de un estudio muy profundizado que, al igual de nosotros, estudiaba 
+el virus del VIH y los diversos factores que la desencadenan. En la conclusión realizada por el Gobierno de España se llegó a nuestra misma conclusión, las relaciones sexuales
+son el mayor desncadenante.
+
+Nuestros datos son variados, tenemos JSON, CSV y ODS. Por ello usamos distintas librerías de R (readr, read_csv, rjson... )
+
+En el estudio podemos apreciar el uso de diferentes formas de union de tabla, que nos ayudaron a comprender los datos mejor, 
+destacando el uso full join y left join. Estas herramientas fueron muy importantes para la realización del seminario.
 
 Para realizar nuestro estudio, importamos las tablas que tenemos guardadas en la carpeta DATA de nuestro repositorio.
 También necesitaremos una serie de paquetes de R Cran para llevar a cabo el estudio, ejecutamos la siguiente caja de código para ello.
@@ -180,9 +192,7 @@ print(prevalencia_por_conducta)
 
 
 
-
-
-Aquí tenemos el gráfico para la prevalencia 
+Podemos ver a partir de la tabla cómo sí parece haber cierta relación entre la orientación o hábito sexual y el desarrollo del virus. Para visualizarlo mejor aquí tenemos el gráfico para la prevalencia 
 
 
 ```{r , eval = TRUE, message=FALSE, warning=FALSE}
@@ -235,7 +245,7 @@ uso_siempre <- uso_preservativo %>% filter(`preservativo siempre` == "SÍ")
 datatable(uso_siempre, 
           caption = "Porcentaje de Uso de Preservativo 'Siempre'")
 ```
-
+De nuevo, tenemos un gráfico para visualizar mejor qué grupos usan preservativos con mayor frecuencia.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 ggplot(data = uso_preservativo, aes(x=`Hábito sexual`, y = `Porcentaje (%)`, color = `preservativo siempre`)) +
@@ -265,9 +275,9 @@ ggplot(data = uso_preservativo, aes(x=`Hábito sexual`, y = `Porcentaje (%)`, co
 ```
 
 
-Aquí empleamos una tabla anterior para estudiar si el número de parejas afecta en el desarrollo del VIH. Cabe destacar que aquí se han incluido tanto como hombres como mujeres.
+Aquí empleamos una tabla anterior (__tabla_unida__) para estudiar si el número de parejas afecta en el desarrollo del VIH. Cabe destacar que aquí se han incluido tanto como hombres como mujeres.
 
-Podemos presenciar en la tabla la correlación que existe entre ser hombre y padecer esta enfermedad. Por otra parte es cierto que los hombres en el estudio tendían a tener un número de aprejas mayor mientras que las mujeres no, eso afecta a la ceteza de estos datos.
+Podemos presenciar en la tabla la correlación que existe entre ser hombre y padecer esta enfermedad. Por otra parte es cierto que los hombres en el estudio tendían a tener un número de parejas mayor en comparación a las mujereso, eso afecta a la certeza de estos datos.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -309,6 +319,7 @@ datatable(promedio_parejas_clinico,
 tabla_unida
 ```
 
+Aquí vemos un gráfico que explica mejor la tabla de arriba, pero con la adición de rango de edad, ya que vimos que tenía cierta relevancia.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 dispersion <- tabla_unida %>%
@@ -318,7 +329,7 @@ dispersion <- tabla_unida %>%
   drop_na(edad, `Parejas ultimo año`, estado_clinico) 
 
 
-ggplot(data = data_dispersion, 
+ggplot(data = dispersion, 
        aes(x = edad, 
            y = `Parejas ultimo año`, 
            color = estado_clinico)) +
@@ -340,7 +351,8 @@ ggplot(data = data_dispersion,
 
 
 ```
-MOTIVO PORQUE INFECCION EN 
+Esta tabla estudia por comunidad autónoma, y basándonos en el grupo de edad, el porcentaje existente de los distintos factores de riesgo incluidos en el estudio que puede desencadenar el virus.
+
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 tabla_relacion_infeccion <- motivosVIH %>%
   group_by( `Comunidades y Ciudades Autónomas`, Motivo, Edad) %>%
@@ -356,7 +368,7 @@ print(tabla_relacion_infeccion)
 
 
 
-
+Lo hemos representado en este tipo de gráfico para poder visualizar la amplitud del estudio, ya que reúne bastante variables.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -387,6 +399,7 @@ ggplot(tabla_para_grafico,
     color = "Motivo de Infección" 
   )
 ```
+Este box-plot nos permite visualizar los diferentes motivos que desencadenan la enfermedad según su rango de edad, ya que hemos notado en la gráfica anterior cómo hay ciertas tendencias respecto a los factores de riesgo dependiendo de la edad.
 
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
@@ -402,6 +415,7 @@ ggplot(data = tabla_unida, aes(x= `edad`, y = `d_grupo_riesgo`, coulor = `d_grup
 
 ```
 
+En esta tabla empleamos un full join con el objetivo de unir dos tablas que nos da un conteo muy general de los casos en función de la orientación sexual que, recordamos, es uno de nuetsros principale sobjetos de estudio en este seminario.
 
 
 ```{r , eval = TRUE,message=FALSE, warning=FALSE}
@@ -423,6 +437,7 @@ print(incidencia)
 ```
 
 
+El estudio llegaba hasta 2023 por lo que quisimos mostrar las dos provincias que habían detectado el mayor número de casos de VIH a lo largo de este año.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 casos_2023 <- REG_Vih_df %>%
@@ -441,6 +456,9 @@ casos_mas_por_conducta
 
 ```
 
+Esta es una distribución dentro de Castilla y León sobre casos de VIH por provincia. Podemos ver cómo Burgos está en tercer lugar, aunque hay que tener en cuenta que en cuanto a rangos Burgos es la tercera provincia más poblada en la comunidad autónoma, detrás de Valladolid y León. 
+
+Con esto vemos que el número de casos es proporcional al número de habitantes de la región por lo que no nos indica nada.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -470,7 +488,7 @@ ggplot(data = casos_por_provincia_conteo,
   
 
 ```
-Quiero hacer 4. ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2013 a 2023?
+Visualización de la evolución del impacto de la enfermedad en la población desde 2013 a 2023
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 tendencia_anual <- tabla_unida %>%
@@ -499,7 +517,8 @@ tendencia
 
 
 ```
-Correlacion si la caida o subida de casos esta influenciada por el grupo de riesgo
+Correlacion si la caida o subida de casos esta influenciada por el grupo de riesgo. Con esto queremos ver si la variación en los nieveles de los factores de riesgo a lo largo de los años tendría impacto sobre el desarrollo de la enfermedad. Podemos ver una clara correlación entre ambas gráficas.
+
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 grupo_casos_nuevos <- tabla_unida %>%
   mutate(ano = as.numeric(ano))%>%
@@ -525,6 +544,8 @@ ggplot(data = grupo_casos_nuevos, aes(x = ano, y = Casos_Nuevos, color = d_grupo
 
 ```
 
+Aquí profuncizamos en la relación que pueda llegar a existir entre el nº de parejas y la enfeermedad. 
+En este caso, aunque los individuos de 60 sí muestra correlación, lo de 40 mustran lo contrario por lo que no podemos cercionarnos de la existencia de una correlación fiable.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -549,7 +570,8 @@ tendencia_parejas
 ```
 
 
-Correlacion si la caida o subida de casos esta acompañado por un cambio en los factores de riesgo
+Estudiamos la posible correlación de la caida o subida de casos ylas variaciones en los factores de riesgo.
+Hemos creado una tabla más simple a partir de nuestra base de datos que tenía una tabla compuesta. De esta manera su representación resulta más sencilla de manejar y entendible en el gráfico.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 Modotransmisioncompleto_limpio <- Modotransmisioncompleto %>%
@@ -621,7 +643,7 @@ Modotransmisioncompleto_limpio <- Modotransmisioncompleto_limpio %>%
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
-correlacion_tendencia__motivo <- tabla_unida %>% 
+correlacion_tendencia_motivo <- tendencia_anual %>% 
   mutate(`Año de diagnóstico`= as.character(ano_num))%>%
   inner_join(
     Modotransmisioncompleto_limpio, by ="Año de diagnóstico"
@@ -647,6 +669,7 @@ correlacion_tendencia__motivo <- tabla_unida %>%
     `Total`
   ) %>%
   arrange(Año)
+
 datatable(correlacion_tendencia_motivo, 
           caption = "Correlación: Tendencia Anual vs. Modo y CCAA de Transmisión",
           options = list(pageLength = 10, scrollX = TRUE))
@@ -737,69 +760,28 @@ tendencia_motivos <- ggplot(data = correlacion_tendencia_motivo, aes(x = `Año`)
 tendencia_motivos
 ```
 
-```{r, eval = TRUE,message=FALSE, warning=FALSE}
-
-
-p <- ggplot(data = correlacion_tendencia_motivo, aes(x = Año)) +
-  geom_line(aes(y = Casos_Nuevos, color = "Total Anual"), 
-   size = 1.2, linetype = "solid") +
-  geom_point(aes(y = Casos_Nuevos, color = "Total Anual"), size = 3) +
-
-
-
-   geom_line(aes(y = HSH, color = "HSH"), size = 1) +
-   geom_point(aes(y = HSH, color = "HSH"), size = 2.5) +
-
-
-  geom_line(aes(y = Heterosexual_H, color = "Heterosexual Hombres"), size = 1) +
-  geom_point(aes(y = Heterosexual_H, color = "Heterosexual Hombres"), size = 2.5) +
-
-  geom_line(aes(y = PID_H, color = "PID Hombres"), size = 1) +
-  geom_point(aes(y = PID_H, color = "PID Hombres"), size = 2.5) +
-
-   scale_color_manual(
-    name = "Factor de Riesgo",
-    values = c(
-      "Total Anual" = "gray",
-      "HSH" = "red",
-      "Heterosexual Hombres" = "blue",
-       "PID Hombres" = "green"
-     ),
-     labels = c(
-       "Total Anual" = "Total de Casos (General)",
-       "HSH" = "HSH",
-      "Heterosexual Hombres" = "Heterosexual (Hombres)",
-      "PID Hombres" = "Uso de Drogas Inyectadas (Hombres)"
-   )
-  ) +
-
-  labs(
-    title = "Evolución Comparada: Casos Totales vs. Factores de Riesgo (2013-2023)",
-    subtitle = "Observación visual de la coincidencia de picos entre la tendencia total y los modos de transmisión.",
-     x = "Año de Diagnóstico",
-     y = "Número de Casos"
-  ) +
-
-  theme_minimal(base_size = 14) 
-
-p
-```
-```{r, eval = TRUE,message=FALSE, warning=FALSE}
-
-
-
-```
-análisis de Casos por Sexo con el análisis de Casos por Grupo de Riesgo a lo largo del tiempo.
 
 
 ## **Resultados**
-Claramente, podemos observar en la primera tabla que los hombres homosexuales tienen más predisposición a contraer la enfermedad, que los hombres heterosexuales.
+A medida que desarrollábamos el seminario fuimos recogiendo y mencionando pequeñas conclusiones a las que llegábamos.
 
-Además, la cuarta tabla muestra que hay más hombres homosexuales que sufren la enfermedad de los que, aunque la muestren, son asintomáticos.
+Al final vemos como el porcentaje de casos VIH en la población española han disminuido drásticamente, notando un  mínimo en los años 2019-2020 que coinciden con los años de la pandemia, cuando el contacto humano se vió reducido. 
+
+Cabe destacar que los hombres han sido los proganistas de este estudio, llevando la delantera en todos los estudios realizados, tanto en aquellos dirigidos a contar el número de parejas anual como a los que marcaban los casos de VIH positivo, esto provocó dificultad para esclarecer si dichos datos son extrapolables o si han sido condicionadas.
+
+Esto es debido a que el número de parejas en sí es un factor de riesgo para el VIH, y el sexo masculino muestra predisposición en los estudios. Por lo tanto, no sabemos si el número de parejas tiene efecto en el desarrollo del virus, o si se ve condicionada por el hecho de que se trata del sexo masculino.
+
+En general, las relaciones HSH han llevado la delantera en todos los estudios, por lo que ha satisfecho nuestra hipótesis inicial. Aunque cabe mencionar que nuetsro objetivo era más amplio, pero nuetsro foco principal radicaba en estas.
 
 ## **Conclusiones generales**
 
-En conclusión, hay mayor número de hombres homosexuales, en comparación con los heterosexuales, que presentan la enfermedad.
+La principal conclusión es que el esfuerzo de prevención y control epidemiológico debe seguir centrándose en las prácticas de riesgo sexual (HSH y Heterosexual), ya que son las vías responsables de la mayoría de las nuevas infecciones por VIH registradas en el periodo 2013-2022.
+Dentro de las prácticas de riesgo sexual debemos destacar las relaciones HSH, que fueron nuestro objeto principal en el estudio.
+
+Mediante la comparativa de gráficas y diversas tablas hemos llegado a la conclusión de que hay una correlación importante entre el desarrollo del VIH y las relaciones HSH.
+Es por ello que creemos necesario una concienciación respecto a las enfermedades de transmisión sexual, ya que, como queríamos probar en al inicio de este seminario, una inmensa mayoría de los casos son prevenibles aplicando el cuidado necesario y responsabilizandose de la salud, no solo propia, sino del colectivo Español.
+
+Al mismo tiempo,nos gustaría mencionar la alta proporción de casos con motivo de transmisión Desconocido, esto nos indica una necesidad de mejorar los métodos de recolección de datos. De esta manera tendremos bases de datos más completas y los estudios podrán realizarse con mayor precisión en el futuro.
 
 ## **Referencias**
 __Los datos de las tablas importadas para este estudio tienen su origen aquí__:
@@ -810,6 +792,8 @@ __Los datos de las tablas importadas para este estudio tienen su origen aquí__:
 - Unidad de vigilancia de VIH, ITS y hepatitis. (2024). VIGILANCIA EPIDEMIOLÓGICA DEL VIH y SIDA EN ESPAÑA 2023. In Centro Nacional de Epidemiología, Instituto de Salud Carlos III/ División de control de VIH, ITS, Hepatitis virales y tuberculosis, & Ministerio de Sanidad, SISTEMA DE INFORMACIÓN SOBRE NUEVOS DIAGNÓSTICOS DE VIH REGISTRO NACIONAL DE CASOS DE SIDA [Report]. https://www.sanidad.gob.es/ciudadanos/enfLesiones/enfTransmisibles/sida/vigilancia/docs/Informe_VIH_SIDA_2023_Nov_2024_def.pdf
 
 - National Library of Medicine. (n.d.). VIH. Retrieved October 16, 2025, from https://medlineplus.gov/spanish/hiv.html
+
+- De Castilla y León, J. (s. f.). Datos abiertos de Castilla y León. Datos Abiertos. https://datosabiertos.jcyl.es/web/es/datos-abiertos-castilla-leon.html
 
 __Aquí están las herramientes empleadas para saber realizar el código de Shiny:__
 
