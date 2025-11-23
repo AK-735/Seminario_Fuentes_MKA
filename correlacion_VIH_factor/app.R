@@ -133,18 +133,23 @@ ui <- fluidPage(
              ),
              
              
-             tabPanel("Evolución Temporal",
+             tabPanel("Evolución temporal",
                       sidebarLayout(
                         sidebarPanel(
-                          sliderInput("rango_anos", "Selecciona rango de años:",
+                          sliderInput("rango_anos_nuevos", "Selecciona rango de años:", 
                                       min = 2013, max = 2023, value = c(2013, 2023), sep = "")
                         ),
                         mainPanel(
-                          plotOutput("plot_evolucion"),
+                          plotOutput("plot_nuevosCasosn"),
                           h4("Datos detallados por año"),
-                          dataTableOutput("tabla_evolucion")
+                          dataTableOutput("tabla_nueva")
                         )
                       )
+             ),
+             tabPanel("Nuevos casos según grupos de riesgo",
+                      h3("Evolución Anual de Nuevos Casos por Grupo de Riesgo"),
+                      p("Tendencia de los casos registrados como VIH Positivo según el grupo de riesgo."),
+                      plotOutput("plot_casos_por_grupo_riesgo", height = "450px") 
              ),
              
              
@@ -243,24 +248,6 @@ ui <- fluidPage(
                           plotOutput("plot_tendencia_parejas", height = "600px")
                         )
                       )
-             ),
-             tabPanel("Nuevos Casos VIH",
-                      sidebarLayout(
-                        sidebarPanel(
-                          sliderInput("rango_anos_nuevos", "Selecciona rango de años:", 
-                                      min = 2013, max = 2023, value = c(2013, 2023), sep = "")
-                        ),
-                        mainPanel(
-                          plotOutput("plot_nuevosCasosn"),
-                          h4("Datos detallados por año"),
-                          dataTableOutput("tabla_nueva")
-                        )
-                      )
-             ),
-             tabPanel("Nuevos casos según grupos de riesgo",
-                      h3("Evolución Anual de Nuevos Casos por Grupo de Riesgo"),
-                      p("Tendencia de los casos registrados como VIH Positivo según el grupo de riesgo."),
-                      plotOutput("plot_casos_por_grupo_riesgo", height = "450px") 
              )
   )
 )
@@ -283,15 +270,7 @@ server <- function(input, output) {
       count(ano_num, name = "Casos_Nuevos")
   })
   
-  output$plot_evolucion <- renderPlot({
-    ggplot(data = datos_evolucion(), aes(x = ano_num, y = Casos_Nuevos)) +
-      geom_point(color = "green", size = 3) +
-      geom_line(color = "red", size = 1.5) +
-      geom_text(aes(label = Casos_Nuevos), vjust = -1, size = 5) +
-      labs(title = paste("Evolución de casos (", input$rango_anos[1], "-", input$rango_anos[2], ")"),
-           x = "Año", y = "Nuevos Casos") +
-      theme_minimal(base_size = 14)
-  })
+
   
   output$plot_nuevosCasosn <- renderPlot({
     ggplot(data = datos_nuevos(), aes(x =ano_num, y = Casos_Nuevos)) +
@@ -316,9 +295,6 @@ server <- function(input, output) {
     datos_nuevos()
   })
   
-  output$tabla_evolucion <- renderDataTable({
-    datos_evolucion()
-  })
   
   
   datos_casos_por_grupo_riesgo <- reactive({
