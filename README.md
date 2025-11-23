@@ -25,9 +25,13 @@ Conocer mediante el estudio de tablas la correlación que puede llegar a existir
 
 ## Metodología y resultados
 Para conocer la respuesta de nuestros objetivos generales y específicos, hemos realizado varias tablas y gráficos de distintos tipos a lo largo del documento. De esta manera, cada tabla y gráfico explican cada una de las preguntas que nos hemos hecho durante el proyecto. Así, hemos llegado a los siguientes resultados:
+
 Claramente, podemos observar en varias tablas y gráficos que los hombres homosexuales tienen más predisposición a contraer la enfermedad, que los hombres heterosexuales.
+
 También, mostramos los motivos por los que se puede contraer el VIH y la frecuencia de cada uno de ellos.
+
 Además, se muestra que hay más hombres homosexuales que sufren la enfermedad de los que, aunque la muestren, son asintomáticos.
+
 Por último, hemos representado la evolución del VIH en España entre los años 2013 y 2023.
 
 ## Conclusiones generales
