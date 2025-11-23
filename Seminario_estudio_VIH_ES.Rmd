@@ -248,8 +248,8 @@ ggplot(data = uso_preservativo, aes(x=`Hábito sexual`, y = `Porcentaje (%)`, co
             hjust = 0.25) +
   
   scale_color_manual(
-    values = c("SÍ" = "red", 
-               "NO" = "blue")
+    values = c("SÍ" = "blue", 
+               "NO" = "red")
   ) +
   labs(
     title = "Comparación del Uso Siempre de Preservativo",
