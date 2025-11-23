@@ -35,7 +35,7 @@ Esta enfermedad afecta a un gran porcentaje de la población española, resultan
 Nuestro primer foco de interés es estudiar la correlación entre la orientación sexual y el VIH, pero también incluiremos otros factores de riesgo que podrían desencadenar dicho virus.
 
 
-## **Objetivos generales**
+## **Objetivo general**
 
 - Concienciar a la población española de los diferentes desencadenantes que pueden llevar a contraer el VIH, ya que en su mayoría son evitables.
 
@@ -45,11 +45,10 @@ Nuestro primer foco de interés es estudiar la correlación entre la orientació
 ## **Objetivos específicos**
 
 1. ¿Cuál es la comunidad autónoma con más casos de VIH en 2023 por conducta homosexual? ¿Y heterosexual?
-2. ¿Cuál es el motivo más común por el que se produce la enfermedad?
-3. ¿Qué porcentaje de hombres tiene la enfermedad con menos de 40 años?
+2. ¿Cuál es el motivo más común por el que se produce la enfermedad en dicha comunidad autónoma?
+3. ¿Qué porcentaje de hombres tiene la enfermedad con menos de 40 años en la provincia de Burgos?
 4. ¿Cuál es la evolución del impacto de la enfermedad en la población desde 2013 a 2023?
 5. ¿Hay más casos de VIH cuanto mayor es la población?
-6. ¿Cuál es la relación entre padecer la enfermedad y los factores de riesgo?
 
 ## **Metodología**
 
@@ -81,6 +80,51 @@ motivosVIH <- read_ods("Input/DATA/motivosVIH.ods")
 yearSexoVIH <- read_ods("Input/DATA/yearSexoVIH.ods")
 
 ```
+### **Cambio en el formato de las columnas**
+
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+Modotransmisioncompleto_limpio <- Modotransmisioncompleto %>%
+  rename(
+    `HSH` = `Modo de transmisión`,
+    
+    `Heterosexual_H`= `...3`,
+    
+    `Heterosexual_M`= `...4`,
+  
+    `PID_H` = `...5`,
+    `PID_M` = `...6`,
+    `Materno_Infantil_H` = `...7`,
+    `Materno_Infantil_M` = `...8`,
+    `Hemoderivados_H` = `...9`,
+    `Hemoderivados_M` = `...10`,
+    `Transfusión_H`= `...11`,
+    `Transfusión_M`= `...12`,
+    `Desconocido_H`= `...13`,
+    `Desconocido_M`= `...14`,
+   
+  ) %>%
+  select(
+    `Año de diagnóstico`, 
+    `HSH`,
+    `Heterosexual_H`, 
+    `Heterosexual_M`,
+    `PID_H`, 
+    `PID_M`,
+    `Materno_Infantil_H`, 
+    `Materno_Infantil_M`, 
+    `Hemoderivados_H`,
+    `Hemoderivados_M`,
+    `Transfusión_H`,
+    `Transfusión_M`,
+    `Desconocido_H`,
+    `Desconocido_M`,
+    `Total`
+    
+)
+
+```
+
+
 
 ### **Importación datos JSON:**
 
@@ -113,7 +157,7 @@ datatable(tabla_unida, options = list(pageLength = 10))
 
 Esta tabla reúne aquellos casos de VIH provocados por conductas sexuales. El foco principal son los hombres, por lo que aquí son nuestro sujeto de estudio.
 Se espera visualizar un conteo de hombres que presenten VIH en base a su preferencia sexual para reflejar el impacto que tiene sobre la población masculina.
-Cabe destacar que aquellos hombres en el estudio que marcaron la opción de "Bisexual" formaron parte del grupo "HSH".
+Cabe destacar que aquelos hombres en el estudio que marcaron la opción de "Bisexual" formaron parte del grupo "HSH".
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -138,7 +182,7 @@ print(prevalencia_por_conducta)
 
 
 
-Aquí tenemos el gráfico para la prevalencia: 
+Aquí tenemos el gráfico para la prevalencia 
 
 
 ```{r , eval = TRUE, message=FALSE, warning=FALSE}
@@ -148,7 +192,12 @@ ggplot(data = prevalencia_por_conducta,
            y = `Tasa de Prevalencia (%)`,
            fill = `Hábito sexual`)) +
   
-  geom_col(colour = "black", width = 0.6) +
+  geom_col(colour = "black", width = 0.5) +
+  
+  scale_fill_manual(
+    values = c("HSH" = "red", 
+               "Heterosexual" = "blue")
+  ) +
   
   geom_text(aes(label = paste0(`Tasa de Prevalencia (%)`, "%")), 
             vjust = -0.6, size = 3) +
@@ -158,7 +207,8 @@ ggplot(data = prevalencia_por_conducta,
     x = "Hábito Sexual",
     y = "Tasa de Prevalencia (%)",
     subtitle = "Tasa de Prevalencia de VIH por Hábito Sexual"
-  ) 
+  )+
+  scale_y_continuous(limits = c(0, 60)) 
 ```
 
 
@@ -196,16 +246,20 @@ ggplot(data = uso_preservativo, aes(x=`Hábito sexual`, y = `Porcentaje (%)`, co
             size = 3.5, 
             vjust = -1.5,
             hjust = 0.25) +
+  
+  scale_color_manual(
+    values = c("SÍ" = "red", 
+               "NO" = "blue")
+  ) +
   labs(
-    title = "Comparación del Uso 'Siempre' de Preservativo",
+    title = "Comparación del Uso Siempre de Preservativo",
     subtitle = "Porcentaje de hombres que usan preservativo en cada hábito sexual",
     x = "Hábito Sexual",
     y = "Porcentaje de Uso (%)",
     color = "¿Preservativo siempre?"
     
   )+
-  scale_y_continuous(labels = scales::percent_format(scale = 1), limits = c(0, 100)) +
-  theme_minimal(base_size = 14)
+  scale_y_continuous(limits = c(0, 100)) 
 
 
 ```
@@ -213,7 +267,7 @@ ggplot(data = uso_preservativo, aes(x=`Hábito sexual`, y = `Porcentaje (%)`, co
 
 Aquí empleamos una tabla anterior para estudiar si el número de parejas afecta en el desarrollo del VIH. Cabe destacar que aquí se han incluido tanto como hombres como mujeres.
 
-Podemos presenciar en la tabla la correlación que existe entre ser hombre y padecer esta enfermedad. Por otra parte, es cierto que los hombres en el estudio tendían a tener un número de parejas mayor que las mujeres, por lo que eso afecta a la certeza de estos datos.
+Podemos presenciar en la tabla la correlación que existe entre ser hombre y padecer esta enfermedad. Por otra parte es cierto que los hombres en el estudio tendían a tener un número de aprejas mayor mientras que las mujeres no, eso afecta a la ceteza de estos datos.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -257,26 +311,20 @@ tabla_unida
 
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
-data_dispersion <- tabla_unida %>%
+dispersion <- tabla_unida %>%
   filter(estado_clinico %in% c("Asintom", "SIDA")) %>%
   mutate(edad = as.numeric(edad),
          `Parejas ultimo año` = as.numeric(`Parejas ultimo año`)) %>%
   drop_na(edad, `Parejas ultimo año`, estado_clinico) 
 
 
-# Generamos el gráfico de dispersión con línea de regresión (geom_smooth)
 ggplot(data = data_dispersion, 
        aes(x = edad, 
            y = `Parejas ultimo año`, 
            color = estado_clinico)) +
   
   geom_point(alpha = 0.6, size = 2) +
-  
-  # 2. Capa de Regresión (geom_smooth)
-  # method = "lm" traza una línea de regresión lineal (modelo lineal)
-  # El color de la línea se mapea automáticamente a 'estado_clinico'
   geom_smooth(method = "lm", 
-              se = TRUE,
               size = 1.2) + 
   
   labs(
@@ -428,6 +476,7 @@ Quiero hacer 4. ¿Cuál es la evolución del impacto de la enfermedad en la pobl
 tendencia_anual <- tabla_unida %>%
   mutate(ano_num = as.numeric(ano)) %>%
   filter(ano_num >= 2013 & ano_num <= 2023) %>%
+  filter(VIH == "SÍ")%>%
   group_by(ano_num)%>%
   count(ano_num, name = "Casos_Nuevos")
 
@@ -448,7 +497,35 @@ tendencia <- ggplot(data = tendencia_anual, aes(x =ano_num, y = Casos_Nuevos))+
   
 tendencia
 
+
 ```
+Correlacion si la caida o subida de casos esta influenciada por el grupo de riesgo
+```{r, eval = TRUE,message=FALSE, warning=FALSE}
+grupo_casos_nuevos <- tabla_unida %>%
+  mutate(ano = as.numeric(ano))%>%
+  filter(VIH == "SÍ")%>%
+  filter(ano >= 2013 & ano <= 2023)%>%
+  
+  group_by(ano, d_grupo_riesgo, VIH)%>%
+  summarise(
+    Casos_Nuevos = n(),
+    .groups = 'drop') %>%
+  select(ano, d_grupo_riesgo, VIH, Casos_Nuevos)
+
+
+ggplot(data = grupo_casos_nuevos, aes(x = ano, y = Casos_Nuevos, color = d_grupo_riesgo))+
+  geom_line(linewidth = 1.5) +
+  geom_point(size =2.5)+
+  labs(
+    title = "Relación Grupo de riesgo - Nuevos casos (2013-2023)",
+    x = "Año de Diagnóstico ",
+    y = "Numero de Nuevos Casos Registrados",
+    color = "Grupo de Riesgo" 
+  )
+
+```
+
+
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
 parejas_vih <- tabla_unida %>%
@@ -456,16 +533,12 @@ parejas_vih <- tabla_unida %>%
   filter ( VIH != "NA") %>%
   group_by(ano, VIH, `Parejas ultimo año`)%>%
   select(ano, VIH , `Parejas ultimo año`)
-parejas_vih
 
 tendencia_parejas <- ggplot(data = parejas_vih, aes(y = `Parejas ultimo año`, x = ano, color = VIH))+
-  geom_point(alpha = 0.73)+
+  geom_point(alpha = 0.7)+
 
-  
-  # Mejorar las etiquetas
   labs(
     title = "Frecuencia de Parejas Sexuales por Año y Estado de VIH",
-    subtitle = "El tamaño del punto indica el número de personas con esa respuesta",
     x = "Número de Parejas Sexuales en el Último Año",
     y = "Año de la Encuesta",
     color = "Estado de VIH",
@@ -476,7 +549,7 @@ tendencia_parejas
 ```
 
 
-Correlación si la caída o subida de casos está acompañado por un cambio en los factores de riesgo.
+Correlacion si la caida o subida de casos esta acompañado por un cambio en los factores de riesgo
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 Modotransmisioncompleto_limpio <- Modotransmisioncompleto %>%
@@ -548,7 +621,7 @@ Modotransmisioncompleto_limpio <- Modotransmisioncompleto_limpio %>%
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
-correlacion_tendencia_motivo <- tendencia_anual %>% 
+correlacion_tendencia__motivo <- tabla_unida %>% 
   mutate(`Año de diagnóstico`= as.character(ano_num))%>%
   inner_join(
     Modotransmisioncompleto_limpio, by ="Año de diagnóstico"
@@ -578,29 +651,6 @@ datatable(correlacion_tendencia_motivo,
           caption = "Correlación: Tendencia Anual vs. Modo y CCAA de Transmisión",
           options = list(pageLength = 10, scrollX = TRUE))
 
-
-```
-
-```{r, eval = TRUE,message=FALSE, warning=FALSE}
-
-
-tendencia <- ggplot(data = correlacion_tendencia_motivo, aes(x = Año, y = Casos_Nuevos))+
-  geom_point(color = "green",size = 3)+
-  geom_line(color = "red",size = 1.5) +
-  geom_text(aes(
-    label = Casos_Nuevos), 
-    vjust = -1.7, size = 3.5, color = "black") +
-    
-
-    labs(
-      title = "Evolución Anual de Nuevas Infecciones por VIH (2013-2023)",
-      x = "Año de Diagnóstico",
-      y = "Número de Nuevos Casos Registrados"
-    ) +
-  
-  theme_minimal() 
-  
-tendencia
 
 ```
 
@@ -739,17 +789,13 @@ p
 
 
 ```
-Análisis de Casos por Sexo con el análisis de Casos por Grupo de Riesgo a lo largo del tiempo.
+análisis de Casos por Sexo con el análisis de Casos por Grupo de Riesgo a lo largo del tiempo.
 
 
 ## **Resultados**
-Claramente, podemos observar en varias tablas y gráficos que los hombres homosexuales tienen más predisposición a contraer la enfermedad, que los hombres heterosexuales.
+Claramente, podemos observar en la primera tabla que los hombres homosexuales tienen más predisposición a contraer la enfermedad, que los hombres heterosexuales.
 
-También, mostramos los motivos por los que se puede contraer el VIH y la frecuencia de cada uno de ellos.
-
-Además, se muestra que hay más hombres homosexuales que sufren la enfermedad de los que, aunque la muestren, son asintomáticos.
-
-Por último, hemos representado la evolución del VIH en España entre los años 2013 y 2023.
+Además, la cuarta tabla muestra que hay más hombres homosexuales que sufren la enfermedad de los que, aunque la muestren, son asintomáticos.
 
 ## **Conclusiones generales**
 
@@ -772,9 +818,9 @@ __Aquí están las herramientes empleadas para saber realizar el código de Shin
 - __Temario de ampliación sobre como usar shiny__ : 
   Custom Bootstrap Sass Themes for shiny and rmarkdown. (s. f.). https://rstudio.github.io/bslib/
 
-- Apply a function to each element of a vector — map. (s. f.).           https://purrr.tidyverse.org/reference/map.html
+  Apply a function to each element of a vector — map. (s. f.).           https://purrr.tidyverse.org/reference/map.html
 
-- Ryan, Y. (2022, 19 octubre). Creación de aplicaciones web interactivas con R y Shiny. Programming Historian. https://programminghistorian.org/es/lecciones/creacion-de-aplicacion-shiny
+  Ryan, Y. (2022, 19 octubre). Creación de aplicaciones web interactivas con R y Shiny. Programming Historian. https://programminghistorian.org/es/lecciones/creacion-de-aplicacion-shiny
 Strayer, N. (s. f.). Shiny. Shiny. https://shiny.posit.co/r/articles/build/css/
 
 
