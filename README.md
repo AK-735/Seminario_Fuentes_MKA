@@ -13,7 +13,9 @@ Nuestro primer foco de interés es estudiar la correlación entre la orientació
 
 
 ## Objetivo general
-Conocer mediante el estudio de tablas la correlación que puede llegar a existir entre entre la orientación sexual de un individuo y su predisposición a contraer la enfermedad del VIH.
+- Concienciar a la población española de los diferentes desencadenantes que pueden llevar a contraer el VIH, ya que en su mayoría son evitables.
+
+- Conocer mediante el estudio de tablas la correlación que puede llegar a existir entre entre la orientación sexual de un individuo y su predisposición a contraer la enfermedad del VIH.
 
 
 ## Objetivos específicos
