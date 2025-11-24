@@ -4,7 +4,7 @@
 #
 # Find out more about building applications with Shiny here:
 #
-#    https://shiny.posit.co/
+#     https://shiny.posit.co/
 #
 
 
@@ -16,18 +16,16 @@ library(DT)
 library(readODS)
 library(bslib) # Hace que se vea mejor, permite una UI moderna
 
-# --- CARGA DE DATOS ---
-  # Cargar CSV
-  tabla_csv_orientacion <- read_csv("DATA/VIH_orientaciónSexual.csv", show_col_types = FALSE)
-  
-  # Cargar ODS
-  Modotransmisioncompleto <- read_ods("DATA/Modotranscompleto.ods")
-  motivosVIH <- read_ods("DATA/motivosVIH.ods")
-  
-  # Cargar JSON
-  REG_Vih <- fromJSON(file = "DATA/registro-nuevas-infecciones-por-vih.json")
-  REG_Vih_df <- map_dfr(REG_Vih, ~ .x$fields) #Esto es necesario a la hora de importar un JSON
-  
+
+tabla_csv_orientacion <- read_csv("DATA/VIH_orientaciónSexual.csv", show_col_types = FALSE)
+
+
+Modotransmisioncompleto <- read_ods("DATA/Modotranscompleto.ods")
+motivosVIH <- read_ods("DATA/motivosVIH.ods")
+
+
+REG_Vih <- fromJSON(file = "DATA/registro-nuevas-infecciones-por-vih.json")
+REG_Vih_df <- map_dfr(REG_Vih, ~ .x$fields) #Esto es necesario a la hora de importar un JSON
 
 
 
@@ -36,13 +34,13 @@ REG_Vih_df$ano_num <- as.numeric(REG_Vih_df$ano)
 REG_Vih_df$edad <- as.numeric(REG_Vih_df$edad)
 
 # Creación tabla unida y otras tablas necesarias
-tabla_unida <- left_join(REG_Vih_df, tabla_csv_orientacion, by = c("edad" = "Edad", "sexo" = "Sexo"), `relationship = "many to many"`)
+tabla_unida <- left_join(REG_Vih_df, tabla_csv_orientacion, by = c("edad" = "Edad", "sexo" = "Sexo"), relationship = "many-to-many")
 tabla_unida$edad <- as.numeric(tabla_unida$edad)
 tabla_unida$`Parejas ultimo año` <- as.numeric(tabla_unida$`Parejas ultimo año`)
 
 tabla_para_grafico <- motivosVIH %>%
   filter(Motivo != "Total") %>% 
-  filter(Edad != "Total") %>%   
+  filter(Edad != "Total") %>%  
   filter(`Comunidades y Ciudades Autónomas` != "Total Nacional")%>%
   mutate(
     Edad = recode(Edad,
@@ -57,13 +55,13 @@ tabla_para_grafico <- motivosVIH %>%
 ui <- fluidPage(
   theme = bs_theme(
     version = 5,
-    bg = "#FFF0F5",      # Color de FONDO (Este es un rosa muy suave, tipo Lavanda)
-    fg = "#333333",      # Color del TEXTO (Gris oscuro para que se lea bien)
-    primary = "#D81B60",# Color de los BOTONES y enlaces (Un rosa más fuerte)
+    bg = "#FFF0F5",       
+    fg = "#333333",       
+    primary = "#D81B60",
     base_font = font_google("Poppins")
-  
+    
   ),
-
+  
   
   titlePanel("Visualización del estudio VIH y los factores de Riesgo"),
   
@@ -94,7 +92,7 @@ ui <- fluidPage(
       }
     "))
   ),
-
+  
   navbarPage("Seminario A",
              
              tabPanel("Inicio", icon = icon("cat"),
@@ -106,11 +104,11 @@ ui <- fluidPage(
                           p("Seminario de Investigación 2025 -  Estudio  sobre la evolución y prevención en el VIH.")
                       ),
                       
-
+                      
                       layout_column_wrap(
                         width = 1/3, 
                         
-  
+                        
                         div(
                           img(src = "corazon.jpg", class = "img-galeria"), 
                           div(class = "texto-imagen", "Crónico")
@@ -134,22 +132,27 @@ ui <- fluidPage(
                       )
              ),
              
-            
-             tabPanel("Evolución Temporal",
+             
+             tabPanel("Evolución temporal",
                       sidebarLayout(
                         sidebarPanel(
-                          sliderInput("rango_anos", "Selecciona rango de años:",
+                          sliderInput("rango_anos_nuevos", "Selecciona rango de años:", 
                                       min = 2013, max = 2023, value = c(2013, 2023), sep = "")
                         ),
                         mainPanel(
-                          plotOutput("plot_evolucion"),
+                          plotOutput("plot_nuevosCasosn"),
                           h4("Datos detallados por año"),
-                          dataTableOutput("tabla_evolucion")
+                          dataTableOutput("tabla_nueva")
                         )
                       )
              ),
+             tabPanel("Nuevos casos según grupos de riesgo",
+                      h3("Evolución Anual de Nuevos Casos por Grupo de Riesgo"),
+                      p("Tendencia de los casos registrados como VIH Positivo según el grupo de riesgo."),
+                      plotOutput("plot_casos_por_grupo_riesgo", height = "450px") 
+             ),
              
-  
+             
              tabPanel("Conducta Sexual",
                       fluidRow(
                         column(6, 
@@ -178,7 +181,7 @@ ui <- fluidPage(
                           checkboxGroupInput("estados_clinicos", "Seleccionar Estado Clínico:",
                                              choices = c("Asintom", "SIDA"),
                                              selected = c("Asintom", "SIDA")),
-                          helpText("Observa cómo cambia la línea de tendencia según el grupo.")
+                          
                         ),
                         mainPanel(
                           plotOutput("plot_regresion_parejas"),
@@ -202,7 +205,7 @@ ui <- fluidPage(
                       h3("Análisis de Grupo de Riesgo (Sífilis)"),
                       p("Visualización de casos según estado de sífilis."),
                       plotOutput("grupo_de_riesgo_edad")
-                      ),
+             ),
              tabPanel("Distribución de los Factores de riesgo",
                       sidebarLayout(
                         sidebarPanel(
@@ -210,12 +213,9 @@ ui <- fluidPage(
                           
                           checkboxGroupInput("filtro_motivos", 
                                              "Selecciona los factores de riesgo:",
-                                      
-                                             choices = unique(tabla_para_grafico$Motivo), 
-                                             
+                                             choices = unique(tabla_para_grafico$Motivo),
                                              selected = unique(tabla_para_grafico$Motivo)
                           ),
-                          helpText("Desmarca las casillas para ocultar ciertos grupos del gráfico.")
                         ),
                         
                         mainPanel(
@@ -228,17 +228,16 @@ ui <- fluidPage(
                         sidebarPanel(
                           h4("Filtros de Población"),
                           
-                          # Filtro de Años (Slider)
+                          
                           sliderInput("filtro_ano_parejas", 
                                       "Selecciona el periodo:",
                                       min = 2013, max = 2023, 
                                       value = c(2013, 2023), 
-                                      sep = ""), # sep="" quita la coma de los miles (2,013 -> 2013)
+                                      sep = ""), 
                           
-                          # Filtro de Estado VIH (Checkbox)
                           checkboxGroupInput("filtro_estado_vih",
                                              "Estado Serológico:",
-                                             choices = unique(tabla_unida$VIH[!is.na(tabla_unida$VIH)]), # Evitamos NA en las opciones
+                                             choices = unique(tabla_unida$VIH[!is.na(tabla_unida$VIH)]), 
                                              selected = unique(tabla_unida$VIH[!is.na(tabla_unida$VIH)])
                           ),
                           
@@ -246,7 +245,6 @@ ui <- fluidPage(
                         ),
                         
                         mainPanel(
-                          # Le damos buena altura para ver los detalles
                           plotOutput("plot_tendencia_parejas", height = "600px")
                         )
                       )
@@ -257,28 +255,81 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
+  
   datos_evolucion <- reactive({
     REG_Vih_df %>%
       filter(ano_num >= input$rango_anos[1] & ano_num <= input$rango_anos[2]) %>%
       count(ano_num, name = "Casos_Nuevos")
   })
   
-  output$plot_evolucion <- renderPlot({
-    ggplot(data = datos_evolucion(), aes(x = ano_num, y = Casos_Nuevos)) +
-      geom_point(color = "green", size = 3) +
-      geom_line(color = "red", size = 1.5) +
-      geom_text(aes(label = Casos_Nuevos), vjust = -1, size = 5) +
-      labs(title = paste("Evolución de casos (", input$rango_anos[1], "-", input$rango_anos[2], ")"),
-           x = "Año", y = "Nuevos Casos") +
+  datos_nuevos <- reactive({
+    req(input$rango_anos_nuevos)
+    tabla_unida %>%
+      filter(ano_num >= input$rango_anos_nuevos[1] & ano_num <= input$rango_anos_nuevos[2]) %>%
+      filter(VIH == "SÍ") %>% 
+      count(ano_num, name = "Casos_Nuevos")
+  })
+  
+
+  
+  output$plot_nuevosCasosn <- renderPlot({
+    ggplot(data = datos_nuevos(), aes(x =ano_num, y = Casos_Nuevos)) +
+      geom_point(color = "green",size = 3) +
+      geom_line(color = "red",size = 1.5) +
+      
+      geom_text(aes(
+        label = Casos_Nuevos), 
+        vjust = -1.0, size = 3.5, color = "black") +
+      
+      labs(
+        title = paste("Evolución Anual de Nuevas Infecciones por VIH (", input$rango_anos_nuevos[1], "-", input$rango_anos_nuevos[2], ")"),
+        x = "Año de Diagnóstico",
+        y = "Número de Nuevos Casos Registrados"
+      ) + 
+
+      scale_y_continuous(limits = c(0, max(datos_nuevos()$Casos_Nuevos) * 1.10)) + 
       theme_minimal(base_size = 14)
   })
   
-  output$tabla_evolucion <- renderDataTable({
-    datos_evolucion()
+  output$tabla_nueva <- renderDataTable({
+    datos_nuevos()
+  })
+  
+  
+  
+  datos_casos_por_grupo_riesgo <- reactive({
+    req(input$rango_anos_nuevos)
+    
+    tabla_unida %>%
+      filter(VIH == "SÍ") %>%
+      filter(ano_num >= input$rango_anos_nuevos[1] & ano_num <= input$rango_anos_nuevos[2]) %>%
+      group_by(ano_num, d_grupo_riesgo) %>%
+      summarise(
+        Casos_Nuevos = n(),
+        .groups = 'drop')
+  })
+  
+  output$plot_casos_por_grupo_riesgo <- renderPlot({
+    
+    data_plot <- datos_casos_por_grupo_riesgo()
+    
+    ggplot(data = data_plot, aes(x = ano_num, y = Casos_Nuevos, color = d_grupo_riesgo)) +
+      geom_line(linewidth = 1.5) +
+      geom_point(size = 2.5) +
+      
+      labs(
+        title = paste("Relación Grupo de riesgo - Nuevos casos (", input$rango_anos_nuevos[1], "-", input$rango_anos_nuevos[2], ")"),
+        x = "Año de Diagnóstico",
+        y = "Número de Nuevos Casos Registrados",
+        color = "Grupo de Riesgo"
+      ) +
+      theme_minimal()
   })
   
   
   # AQuí ponemos los códigos que ya tenemos en el RMD de la lógica de las tablas
+
+  
   data_prevalencia <- reactive({
     tabla_csv_orientacion %>%
       filter(`Hábito sexual` %in% c("HSH", "Heterosexual")) %>%
@@ -289,9 +340,10 @@ server <- function(input, output) {
       ) %>%
       mutate(`Tasa de Prevalencia (%)` = round((VIH_Positivo / Casos) * 100, 2))
   })
+  
   output$grupo_de_riesgo_edad <- renderPlot({
-    ggplot(data = tabla_unida, aes(x= `edad`, y = `d_grupo_riesgo`, coulor = `d_grupo_riesgo`))+
-      geom_boxplot(size = 1.5)+
+    ggplot(data = tabla_unida, aes(x= `edad`, y = `d_grupo_riesgo`, color = `d_grupo_riesgo`)) +
+      geom_boxplot(size = 1.5) +
       labs(
         title = "Distribucion de la edad por grupo de riesgo",
         x = "Edad",
@@ -323,11 +375,28 @@ server <- function(input, output) {
   
   output$plot_prevalencia <- renderPlot({
     ggplot(data = data_prevalencia(), 
-           aes(x = `Hábito sexual`, y = `Tasa de Prevalencia (%)`, fill = `Hábito sexual`)) +
-      geom_col(colour = "black", width = 0.6) +
-      geom_text(aes(label = paste0(`Tasa de Prevalencia (%)`, "%")), vjust = -0.6, size = 4) +
-      theme_minimal() +
-      labs(y = "Tasa (%)")
+           aes(x = `Hábito sexual`, 
+               y = `Tasa de Prevalencia (%)`,
+               fill = `Hábito sexual`)) +
+      
+      geom_col(colour = "black", width = 0.5) +
+      
+      scale_fill_manual(
+        values = c("HSH" = "red", 
+                   "Heterosexual" = "blue")
+      ) +
+      
+      geom_text(aes(label = paste0(`Tasa de Prevalencia (%)`, "%")), 
+                vjust = -0.6, size = 3) +
+      
+      labs(
+        title = "Gráfico de barras de la prevalencia de VIH",
+        x = "Hábito Sexual",
+        y = "Tasa de Prevalencia (%)",
+        subtitle = "Tasa de Prevalencia de VIH por Hábito Sexual"
+      ) +
+      scale_y_continuous(limits = c(0, 60)) +
+      theme_minimal()
   })
   
   output$plot_preservativos <- renderPlot({
@@ -337,12 +406,30 @@ server <- function(input, output) {
       count(`preservativo siempre`, name = "Frecuencia") %>%
       mutate(Total = sum(Frecuencia), Porcentaje = round((Frecuencia/Total)*100, 2))
     
-    ggplot(uso_preservativo, aes(x=`Hábito sexual`, y = Porcentaje, color = `preservativo siempre`)) +
+    ggplot(data = uso_preservativo, aes(x=`Hábito sexual`, y = Porcentaje, color = `preservativo siempre`)) +
       geom_point(size = 8, shape = 18) + 
-      geom_line(aes(group = `preservativo siempre`), linetype = "dashed") +
-      geom_text(aes(label = paste0(Porcentaje, "%")), vjust = -1.5) +
-      theme_minimal() +
-      labs(y = "Porcentaje de Uso (%)")
+      geom_line(aes(group = `preservativo siempre`), size = 0.5, linetype = "dashed") + 
+      # CORRECCIÓN: 'Porcentaje (%)' cambiado a 'Porcentaje'
+      geom_text(aes(label = paste0(Porcentaje, "%")), 
+                color = "black", 
+                size = 3.5, 
+                vjust = -1.5,
+                hjust = 0.25) +
+      
+      scale_color_manual(
+        values = c("SÍ" = "blue", 
+                   "NO" = "red")
+      ) +
+      labs(
+        title = "Comparación del Uso Siempre de Preservativo",
+        subtitle = "Porcentaje de hombres que usan preservativo en cada hábito sexual",
+        x = "Hábito Sexual",
+        y = "Porcentaje de Uso (%)",
+        color = "¿Preservativo siempre?"
+        
+      ) +
+      scale_y_continuous(limits = c(0, 100)) +
+      theme_minimal()
   })
   
   output$dt_prevalencia <- renderDataTable({ data_prevalencia() })
@@ -365,53 +452,44 @@ server <- function(input, output) {
   
   
   output$plot_provincias <- renderPlot({
+    req(input$top_n_prov)
     casos_por_provincia <- REG_Vih_df %>%
       count(provincia_residencia, name = "Total_Casos") %>%
       arrange(desc(Total_Casos)) %>%
-      slice(1:input$top_n_prov) # Interactividad: Muestra solo el top N seleccionado
+      slice_head(n = input$top_n_prov) 
     
     ggplot(casos_por_provincia, aes(x = Total_Casos, y = reorder(provincia_residencia, Total_Casos))) +
       geom_point(size = 4, color = "deeppink") +
       geom_text(aes(label = Total_Casos), hjust = -0.5, size = 3.5) +
-      labs(title = paste("Top", input$top_n_prov, "Provincias con más casos"), 
-           x = "Total Casos", y = "Provincia") +
+      labs(title = paste("Top", input$top_n_prov, "Provincias con más casos"), x = "Total Casos", y = "Provincia") +
       theme_minimal(base_size = 14)
   })
   
   output$plot_tendencia_parejas <- renderPlot({
-    # 1. Validaciones para evitar errores
+    
     req(input$filtro_estado_vih)
     
-    # 2. Preparación de datos (Reactiva dentro del render)
     parejas_vih_filtrado <- tabla_unida %>%
-      # Filtramos por los inputs del usuario
-      filter(ano >= input$filtro_ano_parejas[1] & ano <= input$filtro_ano_parejas[2]) %>%
-      filter(VIH %in% input$filtro_estado_vih) %>%
-      filter(!is.na(VIH)) %>% # Quitamos NAs si quedan
       
-      # --- PASO CLAVE: CONTAR ---
-      # Agrupamos y contamos para que el tamaño ("size") funcione
-      count(ano, VIH, `Parejas ultimo año`, name = "Cantidad_Personas")
+      filter(ano_num >= input$filtro_ano_parejas[1] & ano_num <= input$filtro_ano_parejas[2]) %>%
+      filter(VIH %in% input$filtro_estado_vih) %>%
+      filter(!is.na(VIH)) %>% 
+      
+      count(ano_num, VIH, `Parejas ultimo año`, name = "Cantidad_Personas")
     
     # 3. Gráfico
     ggplot(data = parejas_vih_filtrado, 
-           aes(x = ano, 
-               y = `Parejas ultimo año`, 
-               color = VIH, 
-               size = Cantidad_Personas)) + # Ahora 'size' usa el conteo real
+           aes(x = ano_num, y = `Parejas ultimo año`, color = VIH, size = Cantidad_Personas)) +
       
       geom_point(alpha = 0.7) +
       
-      # Ajustamos la escala de tamaño para que las burbujas se vean bien
       scale_size_continuous(range = c(2, 10)) + 
       
       labs(
         title = "Frecuencia de Parejas Sexuales por Año y Estado de VIH",
         subtitle = paste("Periodo:", input$filtro_ano_parejas[1], "-", input$filtro_ano_parejas[2]),
-        x = "Año de la Encuesta",          # Corregido (antes estaba cambiado)
-        y = "Parejas Sexuales (Último Año)", # Corregido
-        color = "Estado VIH",
-        size = "Nº Personas"
+        x = "Año de la Encuesta", y = "Parejas Sexuales (Último Año)",
+        color = "Estado VIH", size = "Nº Personas"
       ) +
       theme_minimal() +
       theme(
