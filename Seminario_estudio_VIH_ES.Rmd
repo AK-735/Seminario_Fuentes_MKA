@@ -360,7 +360,7 @@ tabla_relacion_infeccion <- motivosVIH %>%
   mutate(Porcentaje_CCAA = (Total_Casos / sum(Total_Casos)) * 100) %>%
   ungroup()
 
-
+tabla_relacion_infeccion
 
 ```
 
@@ -368,6 +368,7 @@ tabla_relacion_infeccion <- motivosVIH %>%
 
 
 Lo hemos representado en este tipo de gráfico para poder visualizar la amplitud del estudio, ya que reúne bastante variables.
+Aunque empleando motivosVIH, debido a que permite que se pueda visualizar con mayor claridad.
 
 ```{r, eval = TRUE,message=FALSE, warning=FALSE}
 
@@ -448,7 +449,6 @@ casos_mas_por_conducta <- casos_2023 %>%
   filter(Casos == max(Casos)) %>%
   ungroup()
 datatable(casos_mas_por_conducta, caption = "Provincia con más casos de VIH en 2023")
-casos_mas_por_conducta
   
 
 
@@ -504,14 +504,14 @@ tendencia <- ggplot(data = tendencia_anual, aes(x =ano_num, y = Casos_Nuevos))+
   
   geom_text(aes(
     label = Casos_Nuevos), 
-    vjust = -1.7, size = 3.5, color = "black") +
+    vjust = -0.65, size = 3.5, color = "black") +
     
 
     labs(
       title = "Evolución Anual de Nuevas Infecciones por VIH (2013-2023)",
       x = "Año de Diagnóstico",
       y = "Número de Nuevos Casos Registrados"
-    ) 
+    )
   
 tendencia
 
